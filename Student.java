@@ -73,7 +73,7 @@ public class Student extends Person {
     private void createReview(Course course)
     {
     }
-    private Course searchRegisteredCourses(int courseCode)
+    public Course searchRegisteredCourses(String courseCode)
     {
         return null;
     }
@@ -114,5 +114,16 @@ public class Student extends Person {
     public void addFutureSemester(FutureSemester futureSemester)
     {
 
+    }
+    public boolean searchCompletedCourses(String courseCode)
+    {
+        for (Course c: completedCourses)
+        {
+            if (c.getCourseCode() == courseCode)
+            {
+                return true; 
+            }
+        } 
+        return false; 
     }
 }

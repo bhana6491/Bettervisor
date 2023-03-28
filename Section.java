@@ -21,23 +21,34 @@ public class Section{
     }
     public String addToWaitlist(Student student)
     {
-        return "Success"; 
+        waitlist.add(student); 
+        return "Student has been added to waitlist"; 
     }
     public Student popFromWaitlist()
     {
-        return null; 
+        //Don't know if this'll work depending on how objects are stored
+        int n = waitlist.size()-1;
+        Student popped = waitlist.get(n); 
+        waitlist.remove(n); 
+        return popped;
     }
     public boolean isFull()
     {
-        return false; 
+        return emptySeats == 0; 
     }
     public String updateSection(int numSeats)
     {
-        return "Success";
+        emptySeats = emptySeats + numSeats; 
+        return "Section Seats have been updated";
     }
     public String toString()
     {
-        return "Success";
+        return "ID: " + sectionID + "\n" + "Empty Seats: " + emptySeats + "\n" + "Lec Time: " + lectureTime + "\n" + "Lab Time: " + labTime + "\n";
+    }
+
+    public int getSectionID()
+    {
+        return sectionID; 
     }
 
 }

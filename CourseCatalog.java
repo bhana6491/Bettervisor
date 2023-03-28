@@ -12,7 +12,7 @@ public class CourseCatalog {
 
     public Course searchCatalog(int courseCode)
     {
-        return null;
+        return null; 
     }
     public void addCourse(Course course)
     {
