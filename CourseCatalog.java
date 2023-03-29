@@ -10,21 +10,32 @@ public class CourseCatalog {
         this.paymentDeadline = paymentDeadline; 
     }
 
-    public Course searchCatalog(int courseCode)
+    public Course searchCatalog(String courseCode)
     {
+        for (Course c:courseList)
+        {
+            if (c.getCourseCode() == courseCode)
+            {
+                return c; 
+            }
+        } 
         return null; 
     }
     public void addCourse(Course course)
     {
+        courseList.add(course); 
         
     }
-    public String listCourses()
+    public void listCourses()
     {
-        return "Success"; 
+        for (Course c: courseList)
+        {
+            c.toString(); 
+        }
     }
 
     public boolean isPastDeadline(Date deadline)
     {
-        return false; 
+        return deadline.after(paymentDeadline);  
     }
 }

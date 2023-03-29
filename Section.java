@@ -7,17 +7,17 @@ public class Section{
     private int emptySeats;
     private int maxSeats;
     private ArrayList<Student> waitlist;
-    private Date lectureTime;
-    private Date labTime;
+    private String lectureTime;
+    private String labTime; 
 
-    Section(int sectionID, int emptySeats, int maxSeats, ArrayList<Student> waitlist, Date lectureTime, Date labTime)
+    Section(int sectionID, int emptySeats, int maxSeats, ArrayList<Student> waitlist, String lectureTime, String labTime)
     {
         this.sectionID = sectionID; 
         this.emptySeats = emptySeats; 
         this.maxSeats = maxSeats; 
         this.waitlist = waitlist; 
         this.lectureTime = lectureTime; 
-        this.labTime = labTime;
+        this.labTime = labTime; 
     }
     public String addToWaitlist(Student student)
     {

@@ -19,7 +19,7 @@ public class Student extends Person {
 
     // Need to figure out how to instantiate these variables 
     // personalInfo, futureSchedule, completedCourses, registeredCourses
-    Student(String firstName, String preferredName, String lastName, int studentID, int currSemester, String universityEmail, float gpa, String major, String minor, float balance, boolean isDomestic, float totalCredits)
+    Student(String firstName, String preferredName, String lastName, int studentID, int currSemester, String universityEmail, float gpa, String major, String minor, float balance, boolean isDomestic, float totalCredits, ArrayList<Course> completedCourses, ArrayList<Course> registeredCourses, PersonalInfo personalInfo)
     {
         super(firstName, preferredName, lastName);
         this.studentID = studentID;
@@ -31,6 +31,11 @@ public class Student extends Person {
         this.balance = balance; 
         this.isDomestic = isDomestic;
         this.totalCredits = totalCredits; 
+        this.completedCourses = completedCourses; 
+        this.registeredCourses = registeredCourses;
+        this.personalInfo = personalInfo; 
+        this.futureSchedule = new ArrayList<FutureSemester>();
+ 
     }
 
     public String applyMinor(Counselor counselor, MinorApp minor)
@@ -60,6 +65,15 @@ public class Student extends Person {
     }
     public String updateBalance(Course course, boolean addMinusCost)
     {
+        float total = 0.0f;
+        for (Course current : registeredCourses) {
+            total = current.getCost();
+            if (current.isPastDeadline == true) {
+
+            }
+        }
+
+
         return "Success";
     }
     public String payBalance()
@@ -113,6 +127,7 @@ public class Student extends Person {
 
     public void addFutureSemester(FutureSemester futureSemester)
     {
+        futureSchedule.add(futureSemester); 
 
     }
     public boolean searchCompletedCourses(String courseCode)
