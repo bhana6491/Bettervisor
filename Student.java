@@ -65,19 +65,18 @@ public class Student extends Person {
     }
     public String updateBalance(Course course, boolean addMinusCost)
     {
-        float total = 0.0f;
-        for (Course current : registeredCourses) {
-            total = current.getCost();
-            if (current.isPastDeadline == true) {
-
-            }
-        }
-
-
         return "Success";
     }
     public String payBalance()
     {
+        float total = 0.0f;
+        for (Course current : registeredCourses) {
+            if (current.isPastDeadline() == true) {
+                current.deregisterCourse();
+            } else {
+                total = current.getCost();
+            }
+        }
         return "Success";
     }
     private Course findCourse(int courseCode)

@@ -9,7 +9,7 @@ public class Course {
     private HashMap<Student, Section> classList;
     private ArrayList<Section> sectionList;
     private ArrayList<Course> prerequisites;
-    private Date examTime;
+    private String examTime;
     private float cost;
     private String term;
     private float weight;
@@ -17,7 +17,7 @@ public class Course {
     private ArrayList<Course> restrictions;
     private ArrayList<CourseReview> reviews;
 
-    Course(String courseCode, HashMap<Student, Section> classList, ArrayList<Section> sectionList, ArrayList<Course> prerequisites, Date examTime, float cost, String term, float weight, String description, ArrayList<Course> restrictions, ArrayList<CourseReview>  reviews)
+    Course(String courseCode, HashMap<Student, Section> classList, ArrayList<Section> sectionList, ArrayList<Course> prerequisites, String examTime, float cost, String term, float weight, String description, ArrayList<Course> restrictions, ArrayList<CourseReview>  reviews)
     {
         this.courseCode = courseCode; 
         this.classList = classList; 
