@@ -31,8 +31,7 @@ public class Bettervisor {
             new ArrayList<Section>(){
                 new Section(
                     1,
-                    100,
-                    100,
+
                     
                 )
             }
@@ -42,4 +41,3 @@ public class Bettervisor {
     
 }
 
-Section s1_2750 = new Section(0101, 20, 100, null, "Tues, Thurs 9am-10am", "Wed 1pm-2pm");
