@@ -7,13 +7,6 @@ import java.util.InputMismatchException;
 import javax.lang.model.util.ElementScanner14;
 public class Bettervisor {
     public static void main(String[] args){
-
-        // Course C3750 = new Course();
-        // Course C2750 = new Course();
-        // Course C3490 = new Course();
-        // Course C3110 = new Course();
-        // Course C1050 = new Course(); 
-
         CourseReview review3750 = new CourseReview("CIS3750", 5, "Very enjoyable course");
         CourseReview review2750 = new CourseReview("CIS2750", 1, "Not fun");
         CourseReview review3490 = new CourseReview("CIS3490", 3, "Very cool");
@@ -147,13 +140,12 @@ public class Bettervisor {
         courseCatalog.addCourse(C3490);
         courseCatalog.addCourse(C3110);
         courseCatalog.addCourse(C1050);
-        // System.out.println(courseCatalog.listCourses());
-        courseCatalog.listCourses();
+        
+        Address addressOne = new Address("Canada", "Ontario", "Newport", "23", "N45 8A4"); 
 
-        PersonalInfo personalOne = new PersonalInfo(null, null, null, null, null);
-
+        PersonalInfo personalOne = new PersonalInfo("Jane", "322-123-5933", "jane@gmail.com", addressOne, "492-132-6945");
         Student studentOne = new Student("John", "J", "Doe", 1234567, 1, "john@uoguelph.ca", 4.0, "Computer Science", null, 0, true, 0, null, null, personalOne);
-
+        // System.out.println(studentOne.toString());
         //Main event loop
         int choice = 1;
         while(choice != 9)
@@ -197,7 +189,26 @@ public class Bettervisor {
 
             if (choice == 1)
             {
-                //register for a course
+
+                System.out.println("Current Course Offerings"); 
+                courseCatalog.listCourses();
+                System.out.print("Enter a course code: "); 
+
+                String courseCodeInput = "";
+                do
+                {
+                    courseCodeInput = myObj.next();
+                    myObj.nextLine();
+
+                    isValid = courseCatalog.searchCatalog(courseCodeInput) != null;
+    
+                    if (!isValid)
+                    {
+                        System.out.print("Please enter a valid course code: ");
+                    }
+                } while (!isValid);
+
+                studentOne.registerCourse(courseCatalog, courseCodeInput);
             }
             else if (choice == 2)
             {
@@ -209,7 +220,7 @@ public class Bettervisor {
             }
             else if (choice == 4)
             {
-                //update personal information
+                studentOne.updatePersonalInfo();
             }
             else if (choice == 5)
             {
@@ -217,7 +228,7 @@ public class Bettervisor {
             }
             else if (choice == 6)
             {
-                pay
+                // pay
             }
             else if (choice == 7)
             {
@@ -227,6 +238,7 @@ public class Bettervisor {
             {
                 //declare a minor
             }
+
         }
 
 

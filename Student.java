@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 public class Student extends Person {
 
     private int studentID;
@@ -44,28 +45,96 @@ public class Student extends Person {
         return "Success";
 
     }
-    public String registerCourse(CourseCatalog catalog, int courseCode)
+    public String registerCourse(CourseCatalog catalog, String courseCode)
     {
-        return "Success";
+
+        Course course = catalog.searchCatalog(courseCode); 
+
+        Section section = course.selectSection(); 
+
+        if (section.isFull() == true)
+        {
+            section.addToWaitlist(this); 
+            System.out.println("You have been added to the Section " + section.getSectionID() + " waitlist"); 
+        }
+        else
+        {
+            course.addToClassList(this, section); 
+            section.updateSection(-1); 
+            updateBalance(course, true); 
+            System.out.println("You have successfuly registered for " + course.getCourseCode() + " in Section " + section.getSectionID()); 
+            System.out.println("Your balance has been updated, current total is: " + balance); 
+        }
+        return "Success";         
     }
     
-    public String addCourseReview(int courseCode)
+    public String addCourseReview(String courseCode)
     {
         return "Success";
     }
 
-    public String deregisterCourse(CourseCatalog catalog, int courseCode)
+    public String deregisterCourse(CourseCatalog catalog, String courseCode)
     {
         return "Success";
     }
 
     public String updatePersonalInfo()
     {
-        return "Success";
+        personalInfo.displayPersonalInfo();
+
+        Scanner personalInfoScanner = new Scanner(System.in);  // Create a Scanner object
+        System.out.print("Which info would you like to update? (1-5): ");
+        int personalInfoChoice = 0;
+        boolean isValid = true;
+        do
+        {
+            if (!personalInfoScanner.hasNextInt())
+            {
+                personalInfoScanner.next();
+                isValid = false;
+            }
+            else
+            {
+                personalInfoChoice = personalInfoScanner.nextInt();
+                isValid = personalInfoChoice >= 1 && personalInfoChoice <= 5;
+            }
+
+            if (!isValid)
+            {
+                System.out.print("Invalid input: please try again");
+                System.out.print("Please make a selection (1-5): ");
+            }
+        } while (!isValid);
+        if (personalInfoChoice == 1)
+        {
+            personalInfo.setEcFirstName("JOE");
+            personalInfo.displayPersonalInfo();
+        }
+        else if (personalInfoChoice == 2)
+        {
+        }
+        else if (personalInfoChoice == 3)
+        {
+        }
+        else if (personalInfoChoice == 4)
+        {
+        }
+        else if (personalInfoChoice == 5)
+        {
+        }
+        return "SUCCESS";
     }
-    public String updateBalance(Course course, boolean addMinusCost)
+    public void updateBalance(Course course, boolean addMinusCost)
     {
-        return "Success";
+
+        if (addMinusCost == true)
+        {
+            balance = balance + course.getCost();
+        }
+        else
+        {
+            balance = balance - course.getCost(); 
+        }
     }
     // public String payBalance()
     // {
@@ -79,7 +148,7 @@ public class Student extends Person {
     //     }
     //     return "Success";
     // }
-    private Course findCourse(int courseCode)
+    private Course findCourse(String courseCode)
     {
         return null;
     }
@@ -90,7 +159,7 @@ public class Student extends Person {
     {
         return null;
     }
-    public String requestRefund(float amount)
+    public String requestRefund(double amount)
     {
         return "Success";
     }
@@ -98,7 +167,7 @@ public class Student extends Person {
     {
         return false; 
     }
-    private double deductFee(int amount)
+    private double deductFee(double amount)
     {
         return (double)4.5;
     }
@@ -114,16 +183,26 @@ public class Student extends Person {
     {
 
     }
-    public String payTuition()
-    {
-        double total = 0.0;
-        for (Course toCheck : registeredCourses) {
-            if (/*CourseCatalog.isPastDeadline()*/false) {
+    // public String payTuition()
+    // {
+    //     double total = 0.0;
 
-            }
-        }
-        return "Success";
-    }
+    //     System.out.println("FINANCIAL REPORT:");
+    //     for (Course toCheck : registeredCourses) {
+    //         if (CourseCatalog.isPastDeadline(toCheck)) {
+    //             deregisterCourse(null, toCheck.getCourseCode());
+    //             System.out.println(toCheck.getCourseCode() + " is past deadline and you were unenrolled.");
+    //         } else {
+    //             System.out.println(toCheck.getCourseCode() + ": $" + toCheck.getCost());
+    //             total += toCheck.getCost();
+    //         }
+    //         System.out.println("Total: $" + total);
+    //         System.out.println("Accounted For: $" + (balance - total)*-1);
+    //         System.out.println("Remaining Balance: $" + balance);
+    //     }
+
+    //     return "Success";
+    // }
 
     public String createFutureSemester(CourseCatalog catalog, int year, String season)
     {

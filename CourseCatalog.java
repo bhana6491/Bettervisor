@@ -15,7 +15,7 @@ public class CourseCatalog {
     {
         for (Course c:courseList)
         {
-            if (c.getCourseCode() == courseCode)
+            if (c.getCourseCode().equals(courseCode))
             {
                 return c; 
             }
@@ -31,12 +31,12 @@ public class CourseCatalog {
     {
         for (Course c: courseList)
         {
-            c.toString(); 
+            System.out.println(c.toString()); 
         }
     }
 
-    //public boolean isPastDeadline(Date deadline)
-    //{
-    //    return deadline.after(paymentDeadline);  
-    //}
+    public boolean isPastDeadline(Date deadline)
+    {
+       return deadline.after(paymentDeadline);  
+    }
 }

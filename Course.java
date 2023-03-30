@@ -36,16 +36,36 @@ public class Course {
         // //Print all sections of a course
         for (Section s: sectionList)
         {
-            s.toString();
-
+            System.out.println(s.toString());
         }
 
-        Scanner sectionIDScanner = new Scanner(System.in);
+        Scanner sectionScanner = new Scanner(System.in);
 
         System.out.print("Enter section ID(integer):");
 
-        int sectionID = sectionIDScanner.nextInt();
-        sectionIDScanner.close(); 
+        boolean isValid = true;
+
+        int sectionID = 0;
+
+        do
+        {
+            if (!sectionScanner.hasNextInt())
+            {
+                sectionScanner.next();
+                isValid = false;
+            }
+            else
+            {
+                sectionID = sectionScanner.nextInt();
+                isValid = true;
+            }
+
+            if (!isValid)
+            {
+                System.out.println("Invalid input: please try again");
+                System.out.print("Please enter a valid Section ID");
+            }
+        } while (!isValid);
 
         //Iterate through sections to match section ID
         for (Section s: sectionList)
@@ -55,7 +75,7 @@ public class Course {
                 return s; 
             }
         }
-
+        System.out.println("NUYLLLL"); 
         return null; 
 
     }
