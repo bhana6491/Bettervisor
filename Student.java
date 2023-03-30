@@ -3,13 +3,13 @@ public class Student extends Person {
 
     private int studentID;
     private int currSemester;
-    private  String universityEmail;
-    private float gpa;
+    private String universityEmail;
+    private double gpa;
     private String major;
     private String  minor;
-    private float balance;
+    private double balance;
     private boolean isDomestic;
-    private float totalCredits;
+    private double totalCredits;
     private PersonalInfo personalInfo;
     private ArrayList<FutureSemester> futureSchedule;
     private ArrayList<Course> completedCourses;
@@ -19,7 +19,7 @@ public class Student extends Person {
 
     // Need to figure out how to instantiate these variables 
     // personalInfo, futureSchedule, completedCourses, registeredCourses
-    Student(String firstName, String preferredName, String lastName, int studentID, int currSemester, String universityEmail, float gpa, String major, String minor, float balance, boolean isDomestic, float totalCredits, ArrayList<Course> completedCourses, ArrayList<Course> registeredCourses, PersonalInfo personalInfo)
+    Student(String firstName, String preferredName, String lastName, int studentID, int currSemester, String universityEmail, double gpa, String major, String minor, double balance, boolean isDomestic, double totalCredits, ArrayList<Course> completedCourses, ArrayList<Course> registeredCourses, PersonalInfo personalInfo)
     {
         super(firstName, preferredName, lastName);
         this.studentID = studentID;
@@ -67,18 +67,18 @@ public class Student extends Person {
     {
         return "Success";
     }
-    public String payBalance()
-    {
-        float total = 0.0f;
-        for (Course current : registeredCourses) {
-            if (current.isPastDeadline() == true) {
-                current.deregisterCourse();
-            } else {
-                total = current.getCost();
-            }
-        }
-        return "Success";
-    }
+    // public String payBalance()
+    // {
+    //     float total = 0.0f;
+    //     for (Course current : registeredCourses) {
+    //         if (current.isPastDeadline() == true) {
+    //             current.deregisterCourse();
+    //         } else {
+    //             total = current.getCost();
+    //         }
+    //     }
+    //     return "Success";
+    // }
     private Course findCourse(int courseCode)
     {
         return null;
@@ -98,9 +98,9 @@ public class Student extends Person {
     {
         return false; 
     }
-    private float deductFee(int amount)
+    private double deductFee(int amount)
     {
-        return (float)4.5;
+        return (double)4.5;
     }
     public String getBankDetails()
     {
@@ -116,6 +116,12 @@ public class Student extends Person {
     }
     public String payTuition()
     {
+        double total = 0.0;
+        for (Course toCheck : registeredCourses) {
+            if (/*CourseCatalog.isPastDeadline()*/false) {
+
+            }
+        }
         return "Success";
     }
 

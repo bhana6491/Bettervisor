@@ -8,6 +8,7 @@ public class CourseCatalog {
     CourseCatalog(Date paymentDeadline)
     {
         this.paymentDeadline = paymentDeadline; 
+        this.courseList = new ArrayList<Course>(); 
     }
 
     public Course searchCatalog(String courseCode)
@@ -34,8 +35,8 @@ public class CourseCatalog {
         }
     }
 
-    public boolean isPastDeadline(Date deadline)
-    {
-        return deadline.after(paymentDeadline);  
-    }
+    //public boolean isPastDeadline(Date deadline)
+    //{
+    //    return deadline.after(paymentDeadline);  
+    //}
 }
