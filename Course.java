@@ -91,12 +91,16 @@ public class Course {
         classList.remove(student); 
 
         //increment number of empty seats available
-        section.updateSection(-1); 
+        section.updateSection(1); 
 
         //Add student from popped list and update their balance
         if (section.isFull() == false)
         {
             Student popped = section.popFromWaitlist(); 
+            if (popped == null)
+            {
+                return;
+            }
             addToClassList(popped, section);
             popped.updateBalance(this, true);
         }        

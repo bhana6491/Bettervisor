@@ -15,7 +15,7 @@ public class PersonalInfo {
     }
     public void displayPersonalInfo()
     {
-        System.out.println("1. ecFirstName: " + ecFirstName + "\n" + "2. ecNumber: " + ecNumber + "\n" + "3. ecEmail: " + ecEmail + "\n" + "4. ecAddress: " + ecAddress + "\n" + "5. Personal Number: " + personalNumber);
+        System.out.println("1. ecFirstName: " + ecFirstName + "\n" + "2. ecNumber: " + ecNumber + "\n" + "3. ecEmail: " + ecEmail + "\n" + "4. Personal Number: " + personalNumber + "\n" + "5. ecAddress: " + ecAddress.toString());
     }
     public void setEcFirstName(String ecFirstName)
     {

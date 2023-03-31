@@ -28,6 +28,10 @@ public class Section{
     {
         //Don't know if this'll work depending on how objects are stored
         int n = waitlist.size()-1;
+        if (n == -1)//0 people on waitlist
+        {
+            return null;
+        }
         Student popped = waitlist.get(n); 
         waitlist.remove(n); 
         return popped;

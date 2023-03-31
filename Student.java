@@ -65,8 +65,10 @@ public class Student extends Person {
         else
         {
             course.addToClassList(this, section); 
+            
             section.updateSection(-1); 
             updateBalance(course, true); 
+            registeredCourses.add(course); 
             return "\nYou have successfuly registered for " + course.getCourseCode() + " in Section " + section.getSectionID() + "\n" + "Your balance has been updated, current total is: " + balance + "\n"; 
         }
     }
@@ -76,9 +78,17 @@ public class Student extends Person {
         return "Success";
     }
 
-    public String deregisterCourse(CourseCatalog catalog, String courseCode)
+    public String deregisterCourse(String courseCode)
     {
-        return "Success";
+
+        Course c = searchRegisteredCourses(courseCode);//should always be valid, since we do the check outside as well
+        Section s = c.searchClassList(this);
+        System.out.println(c.toString());
+        c.removeFromClassList(this, s);
+        registeredCourses.remove(c);
+        updateBalance(c, false);
+
+        return "\nSuccessfully deregistered from " + c.getCourseCode() + "\n" + "Your balance has been updated, current total is: " + balance;
     }
 
     public String updatePersonalInfo()
@@ -110,26 +120,163 @@ public class Student extends Person {
         } while (!isValid);
         if (personalInfoChoice == 1)
         {
-            personalInfo.setEcFirstName("JOE");
-            personalInfo.displayPersonalInfo();
+            boolean inputValid = true;
+            do 
+            {
+                String input = "";
+                System.out.println("Enter new value for ecFirstName");
+                input = personalInfoScanner.next();
+                String pattern = "[A-Za-z]{1}";
+                if (!input.matches(pattern)) 
+                {
+                    System.out.println("Invalid format for first name");
+                    inputValid = false;
+                }
+                else
+                {
+                    personalInfo.setEcFirstName(input);
+                    personalInfo.displayPersonalInfo();
+                    inputValid = true;
+                }
+            } while (!inputValid);
         }
         else if (personalInfoChoice == 2)
         {
+            boolean inputValid = true;
+            do 
+            {
+                String input = "";
+                System.out.println("Enter new value for ecNumber");
+                input = personalInfoScanner.next();
+                String pattern = "\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}";
+                if (!input.matches(pattern)) 
+                {
+                    System.out.println("Invalid format for phone number");
+                    inputValid = false;
+                }
+                else
+                {
+                    personalInfo.setEcNumber(input);
+                    personalInfo.displayPersonalInfo();
+                    inputValid = true;
+                }
+            } while (!inputValid);
         }
         else if (personalInfoChoice == 3)
         {
+            boolean inputValid = true;
+            do
+            {
+                String input = "";
+                System.out.println("Enter new value for ecEmail");
+                input = personalInfoScanner.next();
+                String pattern = "^(.+)@(.+)$";
+                if (!input.matches(pattern)) 
+                {
+                    System.out.println("Invalid format for email address");
+                    inputValid = false;
+                }
+                else
+                {
+                    personalInfo.setEcEmail(input);
+                    personalInfo.displayPersonalInfo();
+                    inputValid = true;
+                }
+            } while (!inputValid);
         }
         else if (personalInfoChoice == 4)
         {
+            boolean inputValid = true;
+            do
+            {
+                String input = "";
+                System.out.println("Enter new value for Personal Number");
+                input = personalInfoScanner.next();
+                String pattern = "^\\d{10}$";
+                if (!input.matches(pattern)) 
+                {
+                    System.out.println("Invalid format for phone number");
+                    inputValid = false;
+                }
+                else
+                {
+                    personalInfo.setPersonalNumber(input);
+                    personalInfo.displayPersonalInfo();
+                    inputValid = true;
+                }
+            } while (!inputValid);
         }
         else if (personalInfoChoice == 5)
         {
+            boolean inputValid = true;
+            do
+            {
+                String countryInput = "";
+                String proviceInput = "";
+                String streetNameInput = "";
+                String streetNumberInput = "";
+                String postalInput = "";
+
+                String countryPattern = "^[a-zA-Z]*$";
+                String numberPattern = "\\d+";
+                String postalPattern = "^(?!.*[DFIOQU])[A-VXY][0-9][A-Z] ?[0-9][A-Z][0-9]$";
+
+                while (true)
+                {
+                    System.out.print("Enter new value for Country: ");
+                    countryInput = personalInfoScanner.next();
+                    if (countryInput.matches(countryPattern))
+                    {
+                        break;
+                    }    
+                }
+                
+                while (true)
+                {
+                    System.out.print("Enter new value for Province: ");
+                    proviceInput = personalInfoScanner.next();
+                    if (proviceInput.matches(countryPattern))
+                    {
+                        break;
+                    }    
+                }
+                
+                while (true)
+                {
+                    System.out.print("Enter new value for Street Name: ");
+                    streetNameInput = personalInfoScanner.next();
+                    if (streetNameInput.matches(countryPattern))
+                    {
+                        break;
+                    }    
+                }
+
+                while (true)
+                {
+                    System.out.print("Enter new value for Street Number: ");
+                    streetNumberInput = personalInfoScanner.next();
+                    if (streetNumberInput.matches(numberPattern))
+                    {
+                        break;
+                    }    
+                }
+
+                while (true)
+                {
+                    System.out.print("Enter new value for Postal Code: ");
+                    postalInput = personalInfoScanner.next();
+                    if (postalInput.matches(postalPattern))
+                    {
+                        break;
+                    }    
+                }
+                personalInfo.setEcAddress(countryInput, proviceInput, streetNameInput, streetNumberInput, postalInput);
+            } while (!inputValid);
         }
         return "SUCCESS";
     }
     public void updateBalance(Course course, boolean addMinusCost)
     {
-
         if (addMinusCost == true)
         {
             balance = balance + course.getCost();
@@ -160,7 +307,14 @@ public class Student extends Person {
     }
     public Course searchRegisteredCourses(String courseCode)
     {
-        return null;
+        for (Course c: registeredCourses)
+        {
+            if (c.getCourseCode().equals(courseCode))
+            {
+                return c;
+            }
+        }
+        return null; 
     }
     public String requestRefund(double amount)
     {
@@ -185,6 +339,19 @@ public class Student extends Person {
     public void setMinor(String minor)
     {
 
+    }
+    public int listRegisteredCourses()
+    {
+        for (Course c: registeredCourses)
+        {
+            System.out.println("Course Code: " + c.getCourseCode()); 
+        }
+        
+        if (registeredCourses.size() == 0)
+        {
+            System.out.println("You are currently registered in 0 courses\n");
+        }
+        return registeredCourses.size(); 
     }
     // public String payTuition()
     // {

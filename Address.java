@@ -13,6 +13,10 @@ public class Address {
         this.streetNumber = streetNumber; 
         this.postalCode = postalCode; 
     }
+    public String toString()
+    {
+        return "Country: " + country + "\n" + "\t      " + "Province: " + province + "\n" + "\t      " + "Street Name: " + streetName + "\n" + "\t      " + "Street Number: " + streetNumber + "\n" + "\t      " + "Postal Code: " + postalCode + "\n";
+    }
     public void setCountry(String country)
     {
         this.country = country; 
