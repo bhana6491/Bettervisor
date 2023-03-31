@@ -43,7 +43,7 @@ public class Section{
     }
     public String toString()
     {
-        return "ID: " + sectionID + "\n" + "Empty Seats: " + emptySeats + "\n" + "Lec Time: " + lectureTime + "\n" + "Lab Time: " + labTime + "\n";
+        return "Section ID: " + sectionID + "\n" + "Empty Seats: " + emptySeats + "\n" + "Lec Time: " + lectureTime + "\n" + "Lab Time: " + labTime + "\n";
     }
 
     public int getSectionID()

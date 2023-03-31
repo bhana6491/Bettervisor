@@ -34,6 +34,9 @@ public class Course {
     public Section selectSection()
     {
         // //Print all sections of a course
+        System.out.println("\nCurrent Section Offerrings:");
+        System.out.println("--------------------------\n");
+
         for (Section s: sectionList)
         {
             System.out.println(s.toString());
@@ -57,25 +60,23 @@ public class Course {
             else
             {
                 sectionID = sectionScanner.nextInt();
-                isValid = true;
+                for (Section s: sectionList)
+                {
+                    if (s.getSectionID() == sectionID)
+                    {
+                        return s; 
+                    }
+                }
+                isValid = false; 
             }
 
             if (!isValid)
             {
-                System.out.println("Invalid input: please try again");
-                System.out.print("Please enter a valid Section ID");
+                System.out.print("Please enter a valid Section ID: ");
             }
         } while (!isValid);
 
         //Iterate through sections to match section ID
-        for (Section s: sectionList)
-        {
-            if (s.getSectionID() == sectionID)
-            {
-                return s; 
-            }
-        }
-        System.out.println("NUYLLLL"); 
         return null; 
 
     }

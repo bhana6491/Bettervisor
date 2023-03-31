@@ -140,11 +140,14 @@ public class Bettervisor {
         courseCatalog.addCourse(C3490);
         courseCatalog.addCourse(C3110);
         courseCatalog.addCourse(C1050);
-        
+
+        ArrayList<Course> regiCourse = new ArrayList<Course>(); 
+        regiCourse.add(C1050);
+
         Address addressOne = new Address("Canada", "Ontario", "Newport", "23", "N45 8A4"); 
 
         PersonalInfo personalOne = new PersonalInfo("Jane", "322-123-5933", "jane@gmail.com", addressOne, "492-132-6945");
-        Student studentOne = new Student("John", "J", "Doe", 1234567, 1, "john@uoguelph.ca", 4.0, "Computer Science", null, 0, true, 0, null, null, personalOne);
+        Student studentOne = new Student("John", "J", "Doe", 1234567, 1, "john@uoguelph.ca", 4.0, "Computer Science", null, 0, true, 0, null, regiCourse, personalOne);
         // System.out.println(studentOne.toString());
         //Main event loop
         int choice = 1;
@@ -190,7 +193,8 @@ public class Bettervisor {
             if (choice == 1)
             {
 
-                System.out.println("Current Course Offerings"); 
+                System.out.println("\nCurrent Course Offerings:"); 
+                System.out.println("--------------------------\n");
                 courseCatalog.listCourses();
                 System.out.print("Enter a course code: "); 
 
@@ -208,7 +212,7 @@ public class Bettervisor {
                     }
                 } while (!isValid);
 
-                studentOne.registerCourse(courseCatalog, courseCodeInput);
+                System.out.println(studentOne.registerCourse(courseCatalog, courseCodeInput));
             }
             else if (choice == 2)
             {

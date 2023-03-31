@@ -50,22 +50,25 @@ public class Student extends Person {
 
         Course course = catalog.searchCatalog(courseCode); 
 
+        if (registeredCourses.contains(course))
+        {
+            return "\nYou are already registered in this course!\n"; 
+        } 
+
         Section section = course.selectSection(); 
 
         if (section.isFull() == true)
         {
             section.addToWaitlist(this); 
-            System.out.println("You have been added to the Section " + section.getSectionID() + " waitlist"); 
+            return "You have been added to the Section " + section.getSectionID() + " waitlist"; 
         }
         else
         {
             course.addToClassList(this, section); 
             section.updateSection(-1); 
             updateBalance(course, true); 
-            System.out.println("You have successfuly registered for " + course.getCourseCode() + " in Section " + section.getSectionID()); 
-            System.out.println("Your balance has been updated, current total is: " + balance); 
+            return "\nYou have successfuly registered for " + course.getCourseCode() + " in Section " + section.getSectionID() + "\n" + "Your balance has been updated, current total is: " + balance + "\n"; 
         }
-        return "Success";         
     }
     
     public String addCourseReview(String courseCode)
