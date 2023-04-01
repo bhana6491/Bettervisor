@@ -1,14 +1,17 @@
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Date;
 
 public class CourseCatalog {
     private ArrayList<Course> courseList;
     private Date paymentDeadline;
+    private ArrayList<String> minorsList;
 
     CourseCatalog(Date paymentDeadline)
     {
         this.paymentDeadline = paymentDeadline; 
         this.courseList = new ArrayList<Course>(); 
+        this.minorsList = new ArrayList<String>(); 
     }
 
     public Course searchCatalog(String courseCode)
@@ -39,4 +42,20 @@ public class CourseCatalog {
     {
        return deadline.after(paymentDeadline);  
     }
+    public void addMinorToList(String minor)
+    {
+        minorsList.add(minor); 
+    }
+    public void displayMinors()
+    {
+        for (String minor: minorsList)
+        {
+            System.out.println(minor); 
+        }
+    }
+    public boolean isValidMinor(String minor)
+    {
+        return minorsList.contains(minor); 
+    }
+
 }

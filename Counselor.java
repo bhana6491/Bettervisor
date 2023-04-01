@@ -19,7 +19,31 @@ public class Counselor extends Person {
 
     public String makeMinorAppDecision(MinorApp minorApp)
     {
-        return "Success";
+        Student minorAppStudent = minorApp.getStudent(); 
+
+        int eligibility = minorAppStudent.canDeclareMinor(); 
+
+        boolean isValid = true;
+
+        if (eligibility == 1 || eligibility == 2)
+        {
+            minorApp.setIsApproved(false);
+            if (eligibility == 1)
+            {
+                return "\nCannot declare minor: GPA < 60\n";
+            }
+            else
+            {
+                return "\nCannot declare minor: you're in your final semester\n";
+            }
+        }
+        else
+        {
+            minorApp.setIsApproved(true);
+            minorAppStudent.setMinor(minorApp.getMinor());
+            return "\nMinor changed from " + minorAppStudent.getMinor() + " to " + minorApp.getMinor() + "!\n"; 
+        }
+        
     }
     
 }

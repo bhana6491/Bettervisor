@@ -35,7 +35,7 @@ public class Course {
     {
         // //Print all sections of a course
         System.out.println("\nCurrent Section Offerrings:");
-        System.out.println("--------------------------\n");
+        System.out.println("----------------------------\n");
 
         for (Section s: sectionList)
         {
@@ -44,12 +44,13 @@ public class Course {
 
         Scanner sectionScanner = new Scanner(System.in);
 
-        System.out.print("Enter section ID(integer):");
+        System.out.print("Enter section ID: ");
 
         boolean isValid = true;
 
         int sectionID = 0;
 
+        //Validating Section ID
         do
         {
             if (!sectionScanner.hasNextInt())
@@ -142,6 +143,7 @@ public class Course {
     {
         return "Course Code: " + courseCode + "\n" + "Course Description: " + description + "\n" + "Course Weight: " + weight + "\n";
     }
+
     // public static void main(String[] args){
 
     //     HashMap<Student, Section> classList = new HashMap<Student, Section>(); 

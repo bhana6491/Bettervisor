@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.InputMismatchException; 
 
-import javax.lang.model.util.ElementScanner14;
 public class Bettervisor {
     public static void main(String[] args){
         CourseReview review3750 = new CourseReview("CIS3750", 5, "Very enjoyable course");
@@ -137,29 +136,41 @@ public class Bettervisor {
         Address addressOne = new Address("Canada", "Ontario", "Newport", "23", "N45 8A4"); 
 
         PersonalInfo personalOne = new PersonalInfo("Jane", "322-123-5933", "jane@gmail.com", addressOne, "492-132-6945");
-        Student studentOne = new Student("John", "J", "Doe", 1234567, 1, "john@uoguelph.ca", 4.0, "Computer Science", null, 0, true, 0, null, regiCourse, personalOne);
+        Student studentOne = new Student("John", "J", "Doe", 1234567, 1, "john@uoguelph.ca", 59, "Computer Science", "Undeclared", 0, true, 0, null, regiCourse, personalOne);
         
         // C1050.addToClassList(studentOne, s1_1050);
         // studentOne.updateBalance(C1050, true);
 
+        //Instantiating Counselor object
+		Counselor counselorOne = new Counselor("Gregory", "Greg", "Klotz", 11123,"Computing", "gklotz@uoguelph.ca");
 
-        // );
+
+        //Instantiating courseCatalog Object
         CourseCatalog courseCatalog = new CourseCatalog(new Date(1680555562));
+        
+        //Adding courses to course catalog
         courseCatalog.addCourse(C2750);
         courseCatalog.addCourse(C3750);
         courseCatalog.addCourse(C3490);
         courseCatalog.addCourse(C3110);
         courseCatalog.addCourse(C1050);
 
+        //Add minor to the catalog's minor list
+        courseCatalog.addMinorToList("MATH");
+        courseCatalog.addMinorToList("PHYSICS");
+        courseCatalog.addMinorToList("ECON");
+        courseCatalog.addMinorToList("BIOLOGY");
+        courseCatalog.addMinorToList("PSYCH");
+
         
 
-        // System.out.println(studentOne.toString());
         //Main event loop
         int choice = 1;
         while(choice != 9)
         {
-            System.out.println("Degree Management Subsystem\n");
-             
+            System.out.println("Degree Management Subsystem");
+            System.out.println("--------------------------\n");
+
             System.out.println("1. Register for a course"); 
             System.out.println("2. Deregister from course"); 
             System.out.println("3. Plan Future Semesters"); 
@@ -170,11 +181,13 @@ public class Bettervisor {
             System.out.println("8. Declare minor");
             System.out.println("9. Exit");
              
-            Scanner myObj = new Scanner(System.in);  // Create a Scanner object
+            Scanner myObj = new Scanner(System.in);  
+            
             System.out.print("Please make a selection (1-9): ");
             
             boolean isValid = true;
 
+            //Getting user's main menu action and validating it
             do
             {
                 if (!myObj.hasNextInt())
@@ -195,11 +208,14 @@ public class Bettervisor {
                 }
             } while (!isValid);
 
+            //Register for course
             if (choice == 1)
             {
                 System.out.println("\nCurrent Course Offerings:"); 
                 System.out.println("--------------------------\n");
+                
                 courseCatalog.listCourses();
+                
                 System.out.print("Enter a course code: "); 
 
                 String courseCodeInput = "";
@@ -267,7 +283,28 @@ public class Bettervisor {
             }
             else if (choice == 8)
             {
-                //declare a minor
+                System.out.println("Available Minors");
+                System.out.println("-----------------");
+                courseCatalog.displayMinors();
+                System.out.println("\nCurrent Minor: " + studentOne.getMinor()); 
+                System.out.print("Please enter a new minor: "); 
+
+                String minorInput = "";
+                do
+                {
+                    minorInput = myObj.next();
+                    myObj.nextLine();
+
+                    isValid = courseCatalog.isValidMinor(minorInput) != false;
+    
+                    if (!isValid)
+                    {
+                        System.out.print("Please enter a valid minor: ");
+                    }
+                } while (!isValid);
+
+                System.out.println(studentOne.applyMinor(counselorOne, minorInput)); 
+
             }
 
         }

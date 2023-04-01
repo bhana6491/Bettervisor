@@ -39,10 +39,11 @@ public class Student extends Person {
  
     }
 
-    public String applyMinor(Counselor counselor, MinorApp minor)
+    public String applyMinor(Counselor counselor, String minor)
     {
-
-        return "Success";
+        //instantiating a minor app
+        MinorApp minorApp = new MinorApp(this, minor);
+        return counselor.makeMinorAppDecision(minorApp); 
 
     }
     public String registerCourse(CourseCatalog catalog, String courseCode)
@@ -96,7 +97,7 @@ public class Student extends Person {
         personalInfo.displayPersonalInfo();
 
         Scanner personalInfoScanner = new Scanner(System.in);  // Create a Scanner object
-        System.out.print("Which info would you like to update? (1-5): ");
+        System.out.print("What information would you like to update? (1-5): ");
         int personalInfoChoice = 0;
         boolean isValid = true;
         do
@@ -124,9 +125,9 @@ public class Student extends Person {
             do 
             {
                 String input = "";
-                System.out.println("Enter new value for ecFirstName");
+                System.out.print("Enter new value for ecFirstName: ");
                 input = personalInfoScanner.next();
-                String pattern = "[A-Za-z]{1}";
+                String pattern = "^[a-zA-Z]*$";
                 if (!input.matches(pattern)) 
                 {
                     System.out.println("Invalid format for first name");
@@ -146,7 +147,7 @@ public class Student extends Person {
             do 
             {
                 String input = "";
-                System.out.println("Enter new value for ecNumber");
+                System.out.print("Enter new value for ecNumber: ");
                 input = personalInfoScanner.next();
                 String pattern = "\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}";
                 if (!input.matches(pattern)) 
@@ -168,7 +169,7 @@ public class Student extends Person {
             do
             {
                 String input = "";
-                System.out.println("Enter new value for ecEmail");
+                System.out.print("Enter new value for ecEmail: ");
                 input = personalInfoScanner.next();
                 String pattern = "^(.+)@(.+)$";
                 if (!input.matches(pattern)) 
@@ -190,7 +191,7 @@ public class Student extends Person {
             do
             {
                 String input = "";
-                System.out.println("Enter new value for Personal Number");
+                System.out.print("Enter new value for Personal Number: ");
                 input = personalInfoScanner.next();
                 String pattern = "^\\d{10}$";
                 if (!input.matches(pattern)) 
@@ -340,6 +341,10 @@ public class Student extends Person {
     {
 
     }
+    public String getMinor()
+    {
+        return this.minor; 
+    }
     public int listRegisteredCourses()
     {
         for (Course c: registeredCourses)
@@ -394,5 +399,20 @@ public class Student extends Person {
             }
         } 
         return false; 
+    }
+    public int canDeclareMinor()
+    {
+        if (gpa < 60)
+        {
+            return 1;
+        }
+        else if(currSemester == 8)
+        {
+            return 2;
+        }
+        else
+        {
+            return 0; 
+        }
     }
 }

@@ -12,4 +12,8 @@ public class MinorApp extends Application{
         // Have to return the copy of the student
         return this.student; 
     }
+    public String getMinor()
+    {
+        return minor; 
+    }
 }
