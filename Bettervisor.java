@@ -1,11 +1,8 @@
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Scanner;
-import java.util.InputMismatchException; 
 import java.lang.Math;
-import java.text.SimpleDateFormat;
 
 public class Bettervisor {
     public static void main(String[] args){
@@ -173,7 +170,7 @@ public class Bettervisor {
 
 
         //Instantiating courseCatalog Object
-        CourseCatalog courseCatalog = new CourseCatalog(new Date( (1680638296000L)));
+        CourseCatalog courseCatalog = new CourseCatalog(new Date((1680638296000L)));
         
         //Adding courses to course catalog
         courseCatalog.addCourse(C2750);
@@ -368,7 +365,7 @@ public class Bettervisor {
             }
             else if (choice == 6)
             {
-                studentOne.payTuition(courseCatalog);
+                System.out.println(studentOne.payTuition(courseCatalog));
             }
             else if (choice == 7)
             {
@@ -425,14 +422,8 @@ public class Bettervisor {
                         System.out.print("Please enter a valid minor: ");
                     }
                 } while (!isValid);
-
                 System.out.println(studentOne.applyMinor(counselorOne, minorInput)); 
-
             }
-
         }
-
-
-
 	}
 }

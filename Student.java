@@ -295,25 +295,35 @@ public class Student extends Person {
     }
     public String payBalance()
     {
-        Scanner balScanner = new Scanner(System.in); //change s if incorrect
-        String s;
-        Integer amount = -1;
-        while (true) {
-            try {
-                s = balScanner.nextLine();
-                amount = Integer.parseInt(s);
-            } finally {
-                if (amount > 0) {
-                    break;
-                }
+        Scanner paymentScanner = new Scanner(System.in);  
+
+        boolean isValid = true;
+        double pay = 0;
+        System.out.print("Please enter the amount you'd like to pay: "); 
+        do
+        {
+            if (!paymentScanner.hasNextDouble())
+            {
+                paymentScanner.next();
+                isValid = false;
             }
-        }
+            else
+            {
+                pay = paymentScanner.nextDouble();
+                isValid = true; 
+            }
+            
+            if (!isValid)
+            {
+                System.out.print("Invalid input: please try again");
+                System.out.print("Please enter a valid amount ");
+            }
+        } while (!isValid);
 
-        this.balance = this.balance - amount;
+        this.balance = this.balance - pay;
 
-        // balScanner.close();
-
-        return "Success";
+        System.out.println("\nPayment Complete!\nNew total is " + "$" + String.format("%.2f", balance));
+        return "SUCCESS";
     }
     public Course findCourse(String courseCode)
     {
@@ -506,12 +516,17 @@ public class Student extends Person {
             System.out.println(toCheck.getCourseCode() + ": $" + toCheck.getCost());
             total += toCheck.getCost();
         }
-        System.out.println("Total: $" + total);
+        System.out.println("------------------------");
+        System.out.println("Semester Bill: $" + total);
         System.out.println("Remaining Balance: $" + balance);
 
-        payBalance();
+        if (balance < 0)
+        {
+            return "Cannot make payment you don't owe anything";
+        }
 
-        return "Success";
+        return payBalance();
+
     }
 
     public String createFutureSemester(CourseCatalog catalog, int year, String season)
