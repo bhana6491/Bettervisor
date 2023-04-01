@@ -1,8 +1,11 @@
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.InputMismatchException; 
+import java.lang.Math;
+import java.text.SimpleDateFormat;
 
 public class Bettervisor {
     public static void main(String[] args){
@@ -21,6 +24,7 @@ public class Bettervisor {
         Section s1_3110 = new Section(7, 20, 100, new ArrayList<Student>(), "Mon, Wed, Fri 8:30am-10:50pm", "Wed 1pm-2pm");
         Section s2_3110 = new Section(8, 20, 100, new ArrayList<Student>(), "Mon, Wed, Fri 8:30am-10:50pm", "Tuesday 3pm-5pm");
         Section s1_1050 = new Section(9, 20, 100, new ArrayList<Student>(), "Tues, Thurs 11am-1pm", "Fri 2pm-3pm");
+        Section s1_3370 = new Section(9, 20, 100, new ArrayList<Student>(), "Tues, Thurs 11am-1pm", "Fri 2pm-3pm");
         
         ArrayList<Section> cis2750Sections = new ArrayList<Section>();
         cis2750Sections.add(s1_2750);
@@ -130,13 +134,36 @@ public class Bettervisor {
             cis1050Restrictions,
             cis1050Reviews
         );
+
+        ArrayList<Section> phil3370Sections = new ArrayList<Section>();
+        phil3370Sections.add(s1_3370);
+        ArrayList<Course> phil3370Prereqs = new ArrayList<Course>();
+        ArrayList<Course> phil3370Restrictions = new ArrayList<Course>();
+        ArrayList<CourseReview> phil3370Reviews = new ArrayList<CourseReview>();
+
+        Course P3370 = new Course(
+            "PHIL3370",
+            new HashMap<Student, Section>(),
+            phil3370Sections,
+            phil3370Prereqs,
+            "1:00pm",
+            754.23,
+            "Winter",
+            0.50,
+            "Course about philosophy",
+            phil3370Restrictions,
+            phil3370Reviews
+        );
+
         ArrayList<Course> regiCourse = new ArrayList<Course>(); 
         // regiCourse.add(C1050);
+        ArrayList<Course> compCourse = new ArrayList<Course>(); 
+        compCourse.add(P3370);
         HashMap<Student, Section> classList = new HashMap<Student, Section>(); 
         Address addressOne = new Address("Canada", "Ontario", "Newport", "23", "N45 8A4"); 
 
         PersonalInfo personalOne = new PersonalInfo("Jane", "322-123-5933", "jane@gmail.com", addressOne, "492-132-6945");
-        Student studentOne = new Student("John", "J", "Doe", 1234567, 1, "john@uoguelph.ca", 59, "Computer Science", "Undeclared", 0, true, 0, null, regiCourse, personalOne);
+        Student studentOne = new Student("John", "J", "Doe", 1234567, 1, "john@uoguelph.ca", 59, "Computer Science", "Undeclared", 0, true, 0, compCourse, regiCourse, personalOne);
         
         // C1050.addToClassList(studentOne, s1_1050);
         // studentOne.updateBalance(C1050, true);
@@ -146,7 +173,7 @@ public class Bettervisor {
 
 
         //Instantiating courseCatalog Object
-        CourseCatalog courseCatalog = new CourseCatalog(new Date(1680555562));
+        CourseCatalog courseCatalog = new CourseCatalog(new Date( (1680638296000L)));
         
         //Adding courses to course catalog
         courseCatalog.addCourse(C2750);
@@ -154,6 +181,7 @@ public class Bettervisor {
         courseCatalog.addCourse(C3490);
         courseCatalog.addCourse(C3110);
         courseCatalog.addCourse(C1050);
+        courseCatalog.addCourse(P3370);
 
         //Add minor to the catalog's minor list
         courseCatalog.addMinorToList("MATH");
@@ -200,7 +228,7 @@ public class Bettervisor {
                     choice = myObj.nextInt();
                     isValid = choice >= 1 && choice <= 9;
                 }
-
+                
                 if (!isValid)
                 {
                     System.out.print("Invalid input: please try again");
@@ -263,7 +291,44 @@ public class Bettervisor {
             }
             else if (choice == 3)
             {
-                //plan future semesters
+                int year = 0;
+                String season = "";
+
+                System.out.print("Specify the year of the future semester: ");
+                do
+                {
+                    if (!myObj.hasNextInt())
+                    {
+                        myObj.next();
+                        isValid = false;
+                    }
+                    else
+                    {
+                        year = myObj.nextInt();
+                        isValid = true;
+                    }
+                    
+                    if (!isValid)
+                    {
+                        System.out.println("Invalid input: please try again");
+                        System.out.print("Specify the year of the future semester: ");
+                    }
+                } while (!isValid);
+
+                System.out.print("Specify the season of the future semester (Fall/Winter/Summer): ");
+                do
+                {
+                    season = myObj.next();
+                    isValid = season.equals("Fall") || season.equals("Winter") || season.equals("Summer");
+                    
+                    if (!isValid)
+                    {
+                        System.out.println("Invalid input: please try again");
+                        System.out.print("Specify the season of the future semester (Fall/Winter/Summer): ");
+                    }
+                } while (!isValid);
+                                                                        
+                studentOne.createFutureSemester(courseCatalog, year, season);
             }
             else if (choice == 4)
             {
@@ -271,15 +336,73 @@ public class Bettervisor {
             }
             else if (choice == 5)
             {
-                //add course review
+                String courseCodeInput = "";
+                Course courseValid = null;
+                do
+                {
+                    System.out.println("\n Completed Courses:"); 
+                    System.out.println("-----------------------------------");
+    
+                    //listing completed courses
+                    for (Course c: studentOne.getCompletedCourses())
+                    {
+                        System.out.println(c.toString()); 
+                    }
+                    System.out.print("\nSelect course to add review for: "); 
+
+                    courseCodeInput = myObj.next();
+
+                    myObj.nextLine();
+
+                    courseValid = studentOne.findCourse(courseCodeInput);
+
+                    // if (courseValid == null)
+                    // {
+                    //     System.out.print("Please enter a valid course code: ");
+                    // }
+                    // this is wrong
+                    // isValid = studentOne.addCourseReview(courseCodeInput) != null;
+                } while (courseValid == null);
+                
+                studentOne.addCourseReview(courseCodeInput);
             }
             else if (choice == 6)
             {
-                // pay
+                studentOne.payTuition(courseCatalog);
             }
             else if (choice == 7)
             {
-                //request a refund
+                double balance = studentOne.getBalance();
+                if (balance >= 0)
+                {
+                    System.out.println("You are not eligible for refund, current balance is: " + balance); 
+                }
+                else
+                {
+                    System.out.println("Current balance is: " + balance); 
+                    System.out.print("How much would you like to refund: "); 
+                    double refundAmount = 0; 
+                    do
+                    {
+                        if (!myObj.hasNextDouble())
+                        {
+                            myObj.next();
+                            isValid = false;
+                        }
+                        else
+                        {
+                            refundAmount = myObj.nextDouble();
+                            isValid = refundAmount <= Math.abs(balance);
+                        }
+                        
+                        if (!isValid)
+                        {
+                            System.out.print("\nPlease select a valid amount to refund: ");
+                        }
+                    } while (!isValid);
+
+                System.out.println(studentOne.requestRefund(refundAmount));     
+                }
             }
             else if (choice == 8)
             {

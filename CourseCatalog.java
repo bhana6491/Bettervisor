@@ -40,6 +40,8 @@ public class CourseCatalog {
 
     public boolean isPastDeadline(Date deadline)
     {
+System.out.println("PAYMENT DEADLINE DATE: " + paymentDeadline.getTime());
+System.out.println("CURRENT DATE: " + deadline.getTime());
        return deadline.after(paymentDeadline);  
     }
     public void addMinorToList(String minor)

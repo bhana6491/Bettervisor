@@ -6,15 +6,20 @@ public class FutureSemester {
 
     FutureSemester(int year,String season)
     {
+        courseList = new ArrayList<Course>();
         this.year = year; 
         this.season = season; 
     }
-    public String addCourseToPlan(Course course)
+    public void addCourseToPlan(Course course)
     {
-        return "Success"; 
+        courseList.add(course);
     }
     public int getNumPlanned()
     {
         return courseList.size(); 
     }
+    //public boolean courseExists(Course course)
+    //{
+        //return courseList
+    //}
 }

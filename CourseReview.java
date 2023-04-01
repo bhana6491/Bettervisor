@@ -13,4 +13,8 @@ public class CourseReview {
         this.comment = comment;
         this.reviewDate = LocalDate.now(); 
     }
+
+    public String toString() {
+        return "\t" + "Rating: " + rating + "\n" + "\t" + "Comment: " + comment + "\n" + "\t" + "Review Date: " + reviewDate + "\n";
+    }
 }

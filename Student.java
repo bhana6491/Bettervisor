@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Date;
 public class Student extends Person {
 
     private int studentID;
@@ -39,7 +40,11 @@ public class Student extends Person {
  
     }
 
-    public String applyMinor(Counselor counselor, String minor)
+    public ArrayList<Course> getCompletedCourses() {
+        return completedCourses;
+    }
+
+   public String applyMinor(Counselor counselor, String minor)
     {
         //instantiating a minor app
         MinorApp minorApp = new MinorApp(this, minor);
@@ -76,7 +81,9 @@ public class Student extends Person {
     
     public String addCourseReview(String courseCode)
     {
-        return "Success";
+        Course c = findCourse(courseCode);
+        createReview(c);
+        return "SUCCESS";
     }
 
     public String deregisterCourse(String courseCode)
@@ -84,7 +91,6 @@ public class Student extends Person {
 
         Course c = searchRegisteredCourses(courseCode);//should always be valid, since we do the check outside as well
         Section s = c.searchClassList(this);
-        System.out.println(c.toString());
         c.removeFromClassList(this, s);
         registeredCourses.remove(c);
         updateBalance(c, false);
@@ -287,24 +293,87 @@ public class Student extends Person {
             balance = balance - course.getCost(); 
         }
     }
-    // public String payBalance()
-    // {
-    //     float total = 0.0f;
-    //     for (Course current : registeredCourses) {
-    //         if (current.isPastDeadline() == true) {
-    //             current.deregisterCourse();
-    //         } else {
-    //             total = current.getCost();
-    //         }
-    //     }
-    //     return "Success";
-    // }
-    private Course findCourse(String courseCode)
+    public String payBalance()
     {
+        Scanner balScanner = new Scanner(System.in); //change s if incorrect
+        String s;
+        Integer amount = -1;
+        while (true) {
+            try {
+                s = balScanner.nextLine();
+                amount = Integer.parseInt(s);
+            } finally {
+                if (amount > 0) {
+                    break;
+                }
+            }
+        }
+
+        this.balance = this.balance - amount;
+
+        // balScanner.close();
+
+        return "Success";
+    }
+    public Course findCourse(String courseCode)
+    {
+        boolean found = false;
+        for (Course c : completedCourses)
+        {
+            if (c.getCourseCode().equals(courseCode))
+            {
+                found = true;
+                return c;
+            }
+        }
+        if (found == false)
+        {
+            System.out.println("Could not find course");
+        }
         return null;
     }
     private void createReview(Course course)
     {
+        ArrayList<String> profanityList = new ArrayList<>();
+        profanityList.add("profanity1");
+        profanityList.add("profanity2");
+        profanityList.add("profanity3");
+
+        Scanner courseReviewScanner = new Scanner(System.in);  // Create a Scanner object
+        int ratingInput = 0;
+        String commentInput = "";
+        boolean isValid = true;
+        while (true)
+        {
+            System.out.println("Enter a rating for 1-5: ");
+            ratingInput = courseReviewScanner.nextInt();
+            courseReviewScanner.nextLine();
+            if (ratingInput >=1 && ratingInput <= 5)
+            {
+                break; 
+            }
+        }
+
+        do
+        {
+            isValid = true;
+            System.out.println("Enter an optional comment: ");
+            commentInput = courseReviewScanner.nextLine();
+            String[] words = commentInput.split("\\s+");
+
+            for (String word : words)
+            {
+                if (profanityList.contains(word))
+                {
+                    System.out.println("You cannot have profanity in your comment");
+                    isValid = false;
+                }
+            }
+        } while (!isValid);
+        
+        CourseReview cr = new CourseReview(course.getCourseCode(), ratingInput, commentInput);
+        course.publishCourseReview(cr);
+        System.out.println(course.toString());
     }
     public Course searchRegisteredCourses(String courseCode)
     {
@@ -319,27 +388,92 @@ public class Student extends Person {
     }
     public String requestRefund(double amount)
     {
-        return "Success";
+        if(isEligible() == true)
+        {
+            if (!isDomestic)
+            {
+                this.balance = deductFee(amount);
+            }
+            System.out.println("\nEnter Bank Details:\n");
+            getBankDetails(); 
+            return giveRefund(amount); 
+        }
+        else
+        {
+            return "\nYou are not eligible for a refund\n"; 
+        }
     }
     public boolean isEligible()
     {
-        return false; 
+        if (!isDomestic && currSemester < 2)
+        {
+            return false; 
+        } 
+        return true; 
     }
     private double deductFee(double amount)
     {
-        return (double)4.5;
+        return balance + amount;//adding to a -ve number = reducing refund amount
     }
     public String getBankDetails()
     {
-        return "Success";
+        String bankNamePattern = "^[a-zA-Z ]*$";
+        String branchPattern = "^\\d{4}$";
+        String transitPattern = "^\\d{3}$";
+
+
+        String bankName = ""; 
+        String branchNumber = ""; 
+        String transitNumber = "";
+
+        Scanner bankingScanner = new Scanner(System.in);  // Create a Scanner object
+
+        //valid bank name
+        while (true)
+        {
+            System.out.print("Enter Bank Name: ");
+            bankName = bankingScanner.nextLine();
+            if (bankName.matches(bankNamePattern))
+            {
+                break;
+            }    
+        }
+        
+        //valid branch number
+        while (true)
+        {
+            System.out.print("Enter branch number(4 digits): ");
+            branchNumber = bankingScanner.next();
+            if (branchNumber.matches(branchPattern))
+            {
+                break;
+            }    
+        }
+        //valid transit number
+        while (true)
+        {
+            System.out.print("Enter transit number(3 digits): ");
+            transitNumber = bankingScanner.next();
+            if (transitNumber.matches(transitPattern))
+            {
+                break;
+            }    
+        }
+        return "\nBank Name: " + bankName + "\nBranch Number: " + branchNumber + "\nTransit Number: " + transitNumber;
+
     }
-    public String submitRequest()
+    public String giveRefund(double amount)
     {
-        return "Success";
+        balance = balance + amount;
+        return "\nYour request has been processed\nCurrent balance is: " + balance; 
     }
     public void setMinor(String minor)
     {
-
+        this.minor = minor;
+    }
+    public double getBalance()
+    {
+        return this.balance; 
     }
     public String getMinor()
     {
@@ -358,29 +492,97 @@ public class Student extends Person {
         }
         return registeredCourses.size(); 
     }
-    // public String payTuition()
-    // {
-    //     double total = 0.0;
+    public String payTuition(CourseCatalog catalog)
+    {
+       double total = 0;
+       if (catalog.isPastDeadline(new Date())) {
+            while (registeredCourses.size() > 0) {
+                deregisterCourse(registeredCourses.get(0).getCourseCode());
+            }
+       }
 
-    //     System.out.println("FINANCIAL REPORT:");
-    //     for (Course toCheck : registeredCourses) {
-    //         if (CourseCatalog.isPastDeadline(toCheck)) {
-    //             deregisterCourse(null, toCheck.getCourseCode());
-    //             System.out.println(toCheck.getCourseCode() + " is past deadline and you were unenrolled.");
-    //         } else {
-    //             System.out.println(toCheck.getCourseCode() + ": $" + toCheck.getCost());
-    //             total += toCheck.getCost();
-    //         }
-    //         System.out.println("Total: $" + total);
-    //         System.out.println("Accounted For: $" + (balance - total)*-1);
-    //         System.out.println("Remaining Balance: $" + balance);
-    //     }
+        System.out.println("FINANCIAL REPORT:");
+        for (Course toCheck : registeredCourses) {
+            System.out.println(toCheck.getCourseCode() + ": $" + toCheck.getCost());
+            total += toCheck.getCost();
+        }
+        System.out.println("Total: $" + total);
+        System.out.println("Remaining Balance: $" + balance);
 
-    //     return "Success";
-    // }
+        payBalance();
+
+        return "Success";
+    }
 
     public String createFutureSemester(CourseCatalog catalog, int year, String season)
     {
+        Scanner inputSc = new Scanner(System.in);
+        if (currSemester == 8) {
+            return "Ineligible to add future semester: Student is on their last semester";
+        }
+
+        FutureSemester futureSem = new FutureSemester(year, season);
+
+        String addCourse = "y";
+        while (addCourse.equals("y")) {
+            boolean isValid = true;
+            String courseCode = "";
+            Course courseToPlan = null;
+
+            System.out.println("\nCurrent Course Offerings:"); 
+            System.out.println("--------------------------\n");
+            catalog.listCourses();
+
+            System.out.print("Specify the the course code of the course you want to add to your future semester: ");
+            do
+            {
+                courseCode = inputSc.next();
+                inputSc.nextLine();
+                
+                courseToPlan = catalog.searchCatalog(courseCode);
+                isValid = courseToPlan != null;
+
+                if (!isValid)
+                {
+                    System.out.println("Please enter a valid course code.");
+                    System.out.print("Specify the the course code of the course you want to add to your future semester: ");
+                }
+            } while (!isValid);
+
+            if (courseToPlan.isRestricted(this)) {
+                System.out.println("Ineligible to plan course: Student has registered for or completed a course that is part of the selected course's restrictions");
+            }
+            else {
+                if (futureSem.getNumPlanned() >= 5) {
+                    //auto exit when num planned courses hits 5
+                    System.out.println("Ineligible to plan course: Future semester has reached the planned course limit");
+                }
+                else {
+                    //if (futureSem.courseExists(courseToPlan)) {
+                        
+                    //}
+                    //else {
+                        //futureSem.addCourseToPlan(courseToPlan);
+                        //System.out.println(courseToPlan.toString());
+                    //}
+                }
+            }
+
+            System.out.print("Continue planning courses? (y/n): ");
+            do
+            {
+                addCourse = inputSc.next();
+                inputSc.nextLine();
+                isValid = addCourse.equals("y") || addCourse.equals("n");
+
+                if (!isValid)
+                {
+                    System.out.println("Invalid option");
+                    System.out.print("Continue planning courses? (y/n): ");
+                }
+            } while (!isValid);
+        }
+
         return "Success";
     }
 

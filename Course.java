@@ -132,17 +132,19 @@ public class Course {
         for (Course c:restrictions)
         {
             String code = c.getCourseCode(); 
-            if (student.searchRegisteredCourses(code) == null && student.searchCompletedCourses(code) == false)
+            if (student.searchRegisteredCourses(code) == null && student.findCourse(code) == null)
             {
-                return false; 
+                return true; 
             }
         }
-        return true; 
+        return false; 
     }
     public String toString()
     {
-        return "Course Code: " + courseCode + "\n" + "Course Description: " + description + "\n" + "Course Weight: " + weight + "\n";
+
+        return "Course Code: " + courseCode + "\n" + "Course Description: " + description + "\n" + "Course Weight: " + weight + "\n" + "Reviews:\n" + reviews.toString();
     }
+
 
     // public static void main(String[] args){
 
