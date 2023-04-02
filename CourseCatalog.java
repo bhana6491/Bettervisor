@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 public class CourseCatalog {
     private ArrayList<Course> courseList;
@@ -38,11 +40,11 @@ public class CourseCatalog {
         }
     }
 
-    public boolean isPastDeadline(Date deadline)
+    public boolean isPastDeadline(Date currDate)
     {
-System.out.println("PAYMENT DEADLINE DATE: " + paymentDeadline.getTime());
-System.out.println("CURRENT DATE: " + deadline.getTime());
-       return deadline.after(paymentDeadline);  
+       DateFormat df = new SimpleDateFormat("MM-dd-yyyy");
+       System.out.println("PAYMENT DEADLINE DATE: "  + df.format(paymentDeadline.getTime()));
+       return currDate.after(paymentDeadline);  
     }
     public void addMinorToList(String minor)
     {

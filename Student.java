@@ -61,6 +61,11 @@ public class Student extends Person {
             return "\nYou are already registered in this course!\n"; 
         } 
 
+        if (completedCourses.contains(course))
+        {
+            return "\nYou have already completed this course!\n";
+        }
+
         Section section = course.selectSection(); 
 
         if (section.isFull() == true)
@@ -82,8 +87,15 @@ public class Student extends Person {
     public String addCourseReview(String courseCode)
     {
         Course c = findCourse(courseCode);
-        createReview(c);
-        return "SUCCESS";
+        if (c == null)
+        {
+            return "Can't review a course that you haven't taken yet";
+        }
+        else
+        {
+            createReview(c);
+            return "Successfully reviewed course!";
+        }
     }
 
     public String deregisterCourse(String courseCode)
@@ -310,7 +322,9 @@ public class Student extends Person {
             else
             {
                 pay = paymentScanner.nextDouble();
-                isValid = true; 
+                if (pay > 0) {
+                    isValid = true;
+                } 
             }
             
             if (!isValid)
@@ -355,7 +369,7 @@ public class Student extends Person {
         boolean isValid = true;
         while (true)
         {
-            System.out.println("Enter a rating for 1-5: ");
+            System.out.print("Enter a rating [1-5]: ");
             ratingInput = courseReviewScanner.nextInt();
             courseReviewScanner.nextLine();
             if (ratingInput >=1 && ratingInput <= 5)
@@ -367,7 +381,7 @@ public class Student extends Person {
         do
         {
             isValid = true;
-            System.out.println("Enter an optional comment: ");
+            System.out.print("Enter an optional comment: ");
             commentInput = courseReviewScanner.nextLine();
             String[] words = commentInput.split("\\s+");
 
@@ -415,7 +429,7 @@ public class Student extends Person {
     }
     public boolean isEligible()
     {
-        if (!isDomestic && currSemester < 2)
+        if (!isDomestic && currSemester <= 2)
         {
             return false; 
         } 
@@ -506,9 +520,11 @@ public class Student extends Person {
     {
        double total = 0;
        if (catalog.isPastDeadline(new Date())) {
+            System.out.println("You are past the deadline, deregistering from all courses!");
             while (registeredCourses.size() > 0) {
                 deregisterCourse(registeredCourses.get(0).getCourseCode());
             }
+            
        }
 
         System.out.println("FINANCIAL REPORT:");
@@ -518,9 +534,9 @@ public class Student extends Person {
         }
         System.out.println("------------------------");
         System.out.println("Semester Bill: $" + total);
-        System.out.println("Remaining Balance: $" + balance);
+        System.out.println("Remaining Balance: $" + String.format("%.1f", balance));
 
-        if (balance < 0)
+        if (balance <= 0)
         {
             return "Cannot make payment you don't owe anything";
         }
@@ -568,18 +584,14 @@ public class Student extends Person {
                 System.out.println("Ineligible to plan course: Student has registered for or completed a course that is part of the selected course's restrictions");
             }
             else {
-                if (futureSem.getNumPlanned() >= 5) {
-                    //auto exit when num planned courses hits 5
-                    System.out.println("Ineligible to plan course: Future semester has reached the planned course limit");
+                if (futureSem.courseExists(courseToPlan)) {
+                    System.out.println("Ineligile to plan course: Student has already planned the selected course");
                 }
                 else {
-                    //if (futureSem.courseExists(courseToPlan)) {
-                        
-                    //}
-                    //else {
-                        //futureSem.addCourseToPlan(courseToPlan);
-                        //System.out.println(courseToPlan.toString());
-                    //}
+                    futureSem.addCourseToPlan(courseToPlan);
+                    if (futureSem.getNumPlanned() >= 5) {
+                        break;
+                    }
                 }
             }
 
@@ -598,7 +610,11 @@ public class Student extends Person {
             } while (!isValid);
         }
 
-        return "Success";
+        addFutureSemester(futureSem);
+        System.out.println("Created future semester:");
+        System.out.println(futureSem.toString());
+
+        return "Successfully created a future semester!";
     }
 
     public void addFutureSemester(FutureSemester futureSemester)

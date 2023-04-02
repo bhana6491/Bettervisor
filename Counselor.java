@@ -21,9 +21,9 @@ public class Counselor extends Person {
     {
         Student minorAppStudent = minorApp.getStudent(); 
 
-        int eligibility = minorAppStudent.canDeclareMinor(); 
+        String oldMinor = minorAppStudent.getMinor(); 
 
-        boolean isValid = true;
+        int eligibility = minorAppStudent.canDeclareMinor(); 
 
         if (eligibility == 1 || eligibility == 2)
         {
@@ -37,11 +37,16 @@ public class Counselor extends Person {
                 return "\nCannot declare minor: you're in your final semester\n";
             }
         }
+        else if (oldMinor.equals(minorApp.getMinor()))
+        {
+            return "\nCannot declare the same minor!\n";
+        }
         else
         {
             minorApp.setIsApproved(true);
             minorAppStudent.setMinor(minorApp.getMinor());
-            return "\nMinor changed from " + minorAppStudent.getMinor() + " to " + minorApp.getMinor() + "!\n"; 
+            return "\nMinor changed from " + oldMinor + " to " + minorApp.getMinor() + "!\n"; 
+
         }
         
     }

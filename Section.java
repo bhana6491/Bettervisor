@@ -32,8 +32,8 @@ public class Section{
         {
             return null;
         }
-        Student popped = waitlist.get(n); 
-        waitlist.remove(n); 
+        Student popped = waitlist.get(0); 
+        waitlist.remove(0); 
         return popped;
     }
     public boolean isFull()

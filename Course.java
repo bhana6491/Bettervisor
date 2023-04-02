@@ -103,6 +103,7 @@ public class Course {
                 return;
             }
             addToClassList(popped, section);
+            System.out.println("A student on the waitlist was added to the classlist!");
             popped.updateBalance(this, true);
         }        
     }

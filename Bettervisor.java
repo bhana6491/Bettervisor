@@ -6,15 +6,24 @@ import java.lang.Math;
 
 public class Bettervisor {
     public static void main(String[] args){
-        CourseReview review3750 = new CourseReview("CIS3750", 5, "Very enjoyable course");
+
+        //Course review initializations
         CourseReview review2750 = new CourseReview("CIS2750", 1, "Not fun");
+        CourseReview review3750 = new CourseReview("CIS3750", 5, "Very enjoyable course");
         CourseReview review3490 = new CourseReview("CIS3490", 3, "Very cool");
         CourseReview review3110 = new CourseReview("CIS3110", 5, "Great fun");
         CourseReview review1050 = new CourseReview("CIS1050", 5, "Web Development is cool"); 
+
+        Student studentTwo = new Student("Joseph", "Joe", "Den", 5673492, 3, "joseph@uoguelph.ca", 60, "Computer Science", "ECON", 0, true, 0, null, new ArrayList<Course>(), null);
+
+        ArrayList<Student> s1_3750Waitlist = new ArrayList<Student>();
         
-        Section s1_2750 = new Section(1, 20, 100, new ArrayList<Student>(), "Tues, Thurs 9am-10am", "Wed 1pm-2pm");
-        Section s2_2750 = new Section(2, 20, 100, new ArrayList<Student>(), "Tues, Thurs 9am-10am", "Fri 1pm-2pm");
-        Section s1_3750 = new Section(3, 20, 100, new ArrayList<Student>(), "Mon, Wed, Fri 8am-9:30am", "Wed 11am-12pm");
+        //adding studentTwo to waitlist
+        s1_3750Waitlist.add(studentTwo); 
+
+        Section s1_2750 = new Section(1, 0, 100, new ArrayList<Student>(), "Tues, Thurs 9am-10am", "Wed 1pm-2pm");
+        Section s2_2750 = new Section(2,20, 100, new ArrayList<Student>(), "Tues, Thurs 9am-10am", "Fri 1pm-2pm");
+        Section s1_3750 = new Section(3, 1, 100, s1_3750Waitlist, "Mon, Wed, Fri 8am-9:30am", "Wed 11am-12pm");
         Section s2_3750= new Section(4, 20, 100, new ArrayList<Student>(), "Mon, Wed, Fri 8am-9:30am", "Mon 3pm-4pm");
         Section s1_3490 = new Section(5, 20, 100, new ArrayList<Student>(), "Tues, Thurs 2pm-3:30pm", "Wed 1pm-2pm");
         Section s2_3490 = new Section(6, 20, 100, new ArrayList<Student>(), "Tues, Thurs 4pm-6pm", "Wed 1pm-2pm");
@@ -22,7 +31,8 @@ public class Bettervisor {
         Section s2_3110 = new Section(8, 20, 100, new ArrayList<Student>(), "Mon, Wed, Fri 8:30am-10:50pm", "Tuesday 3pm-5pm");
         Section s1_1050 = new Section(9, 20, 100, new ArrayList<Student>(), "Tues, Thurs 11am-1pm", "Fri 2pm-3pm");
         Section s1_3370 = new Section(9, 20, 100, new ArrayList<Student>(), "Tues, Thurs 11am-1pm", "Fri 2pm-3pm");
-        
+
+        //Course initializations
         ArrayList<Section> cis2750Sections = new ArrayList<Section>();
         cis2750Sections.add(s1_2750);
         cis2750Sections.add(s2_2750);
@@ -30,7 +40,6 @@ public class Bettervisor {
         ArrayList<Course> cis2750Restrictions = new ArrayList<Course>();
         ArrayList<CourseReview> cis2750Reviews = new ArrayList<CourseReview>();
         cis2750Reviews.add(review2750);
-
         Course C2750 = new Course(
             "CIS2750",
             new HashMap<Student, Section>(),
@@ -52,6 +61,7 @@ public class Bettervisor {
         ArrayList<Course> cis3750Restrictions = new ArrayList<Course>();
         ArrayList<CourseReview> cis3750Reviews = new ArrayList<CourseReview>();
         cis3750Reviews.add(review3750);
+
 
         Course C3750 = new Course(
             "CIS3750",
@@ -160,18 +170,34 @@ public class Bettervisor {
         Address addressOne = new Address("Canada", "Ontario", "Newport", "23", "N45 8A4"); 
 
         PersonalInfo personalOne = new PersonalInfo("Jane", "322-123-5933", "jane@gmail.com", addressOne, "492-132-6945");
-        Student studentOne = new Student("John", "J", "Doe", 1234567, 1, "john@uoguelph.ca", 59, "Computer Science", "Undeclared", 0, true, 0, compCourse, regiCourse, personalOne);
+
+
+        //For Minor alt flows
+        //1) Change gpa < 60
+        //2) Change currSemester=8(student is in their final semester)
+
+        //For Refund alt flows
+        //1) Change isDomestic to true and currSemester to 1
+        Student studentOne = new Student("John", "J", "Doe", 1234567, 2, "john@uoguelph.ca", 80, "Computer Science", "Undeclared", -900, true, 0, compCourse, regiCourse, personalOne);
         
+
+
+
         // C1050.addToClassList(studentOne, s1_1050);
         // studentOne.updateBalance(C1050, true);
 
         //Instantiating Counselor object
+
+       
+
+        //Initializing Counselor
 		Counselor counselorOne = new Counselor("Gregory", "Greg", "Klotz", 11123,"Computing", "gklotz@uoguelph.ca");
 
-
         //Instantiating courseCatalog Object
-        CourseCatalog courseCatalog = new CourseCatalog(new Date((1680638296000L)));
-        
+        //Change Long value to - 1680215967000L, to make new deadline 
+        // march 30 - 1680215967000
+        // april 10 - 1681166941000
+        CourseCatalog courseCatalog = new CourseCatalog(new Date((1681166941000L)));
         //Adding courses to course catalog
         courseCatalog.addCourse(C2750);
         courseCatalog.addCourse(C3750);
@@ -260,6 +286,7 @@ public class Bettervisor {
                 System.out.println(studentOne.registerCourse(courseCatalog, courseCodeInput));
             }
             
+            //Deregister from course
             else if (choice == 2)
             {
                 System.out.println("\nCurrently registered in the following courses:"); 
@@ -325,7 +352,7 @@ public class Bettervisor {
                     }
                 } while (!isValid);
                                                                         
-                studentOne.createFutureSemester(courseCatalog, year, season);
+                System.out.println(studentOne.createFutureSemester(courseCatalog, year, season));
             }
             else if (choice == 4)
             {
@@ -353,15 +380,9 @@ public class Bettervisor {
 
                     courseValid = studentOne.findCourse(courseCodeInput);
 
-                    // if (courseValid == null)
-                    // {
-                    //     System.out.print("Please enter a valid course code: ");
-                    // }
-                    // this is wrong
-                    // isValid = studentOne.addCourseReview(courseCodeInput) != null;
                 } while (courseValid == null);
                 
-                studentOne.addCourseReview(courseCodeInput);
+                System.out.println(studentOne.addCourseReview(courseCodeInput));
             }
             else if (choice == 6)
             {

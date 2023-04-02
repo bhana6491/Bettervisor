@@ -18,8 +18,24 @@ public class FutureSemester {
     {
         return courseList.size(); 
     }
-    //public boolean courseExists(Course course)
-    //{
-        //return courseList
-    //}
+    public boolean courseExists(Course course)
+    {
+        for (Course c : courseList) {
+            if (course.getCourseCode().equals(c.getCourseCode())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public String toString()
+    {
+        String result = "\nFuture Semester\n------------------\nYear: " + year + "\nSeason: " + season +  "\n------------------" + "\nPlanned Courses:\n";
+
+        for (Course c : courseList) {
+            result = result + c.toString() + "\n------------------\n";
+        }
+
+        return result;
+    }
 }
