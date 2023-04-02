@@ -36,29 +36,23 @@ public class Bettervisor {
         ArrayList<Section> cis2750Sections = new ArrayList<Section>();
         cis2750Sections.add(s1_2750);
         cis2750Sections.add(s2_2750);
-        ArrayList<Course> cis2750Prereqs = new ArrayList<Course>();
-        ArrayList<Course> cis2750Restrictions = new ArrayList<Course>();
         ArrayList<CourseReview> cis2750Reviews = new ArrayList<CourseReview>();
         cis2750Reviews.add(review2750);
         Course C2750 = new Course(
             "CIS2750",
             new HashMap<Student, Section>(),
             cis2750Sections,
-            cis2750Prereqs,
             "1:00pm",
             754.23,
             "Winter",
             0.75,
             "Course about creating a application",
-            cis2750Restrictions,
             cis2750Reviews
         );
 
         ArrayList<Section> cis3750Sections = new ArrayList<Section>();
         cis3750Sections.add(s1_3750);
         cis3750Sections.add(s2_3750);
-        ArrayList<Course> cis3750Prereqs = new ArrayList<Course>();
-        ArrayList<Course> cis3750Restrictions = new ArrayList<Course>();
         ArrayList<CourseReview> cis3750Reviews = new ArrayList<CourseReview>();
         cis3750Reviews.add(review3750);
 
@@ -67,43 +61,35 @@ public class Bettervisor {
             "CIS3750",
             new HashMap<Student, Section>(),
             cis3750Sections,
-            cis3750Prereqs,
             "1:00pm",
             600.99,
             "Winter",
             0.75,
             "Course about software development process",
-            cis3750Restrictions,
             cis3750Reviews
         );
 
         ArrayList<Section> cis3490Sections = new ArrayList<Section>();
         cis3490Sections.add(s1_3490);
         cis3490Sections.add(s2_3490);
-        ArrayList<Course> cis3490Prereqs = new ArrayList<Course>();
-        ArrayList<Course> cis3490Restrictions = new ArrayList<Course>();
         ArrayList<CourseReview> cis3490Reviews = new ArrayList<CourseReview>();
-        cis3490Reviews.add(review3750);
+        cis3490Reviews.add(review3490);
 
         Course C3490 = new Course(
             "CIS3490",
             new HashMap<Student, Section>(),
             cis3490Sections,
-            cis3750Prereqs,
             "1:00pm",
             500.00,
             "Winter",
             0.50,
             "Course about algorithms",
-            cis3490Restrictions,
             cis3490Reviews
         );
 
         ArrayList<Section> cis3110Sections = new ArrayList<Section>();
         cis3110Sections.add(s1_3110);
         cis3110Sections.add(s2_3110);
-        ArrayList<Course> cis3110Prereqs = new ArrayList<Course>();
-        ArrayList<Course> cis3110Restrictions = new ArrayList<Course>();
         ArrayList<CourseReview> cis3110Reviews = new ArrayList<CourseReview>();
         cis3110Reviews.add(review3110);
 
@@ -111,20 +97,16 @@ public class Bettervisor {
             "CIS3110",
             new HashMap<Student, Section>(),
             cis3110Sections,
-            cis3110Prereqs,
             "1:00pm",
             754.23,
             "Winter",
             0.50,
             "Course about operating systems",
-            cis3110Restrictions,
             cis3110Reviews
         );
 
         ArrayList<Section> cis1050Sections = new ArrayList<Section>();
         cis1050Sections.add(s1_1050);
-        ArrayList<Course> cis1050Prereqs = new ArrayList<Course>();
-        ArrayList<Course> cis1050Restrictions = new ArrayList<Course>();
         ArrayList<CourseReview> cis1050Reviews = new ArrayList<CourseReview>();
         cis1050Reviews.add(review1050);
 
@@ -132,38 +114,31 @@ public class Bettervisor {
             "CIS1050",
             new HashMap<Student, Section>(),
             cis1050Sections,
-            cis1050Prereqs,
             "1:00pm",
             754.23,
             "Winter",
             0.50,
             "Course about web development",
-            cis1050Restrictions,
             cis1050Reviews
         );
 
         ArrayList<Section> phil3370Sections = new ArrayList<Section>();
         phil3370Sections.add(s1_3370);
-        ArrayList<Course> phil3370Prereqs = new ArrayList<Course>();
-        ArrayList<Course> phil3370Restrictions = new ArrayList<Course>();
         ArrayList<CourseReview> phil3370Reviews = new ArrayList<CourseReview>();
 
         Course P3370 = new Course(
             "PHIL3370",
             new HashMap<Student, Section>(),
             phil3370Sections,
-            phil3370Prereqs,
             "1:00pm",
             754.23,
             "Winter",
             0.50,
             "Course about philosophy",
-            phil3370Restrictions,
             phil3370Reviews
         );
 
         ArrayList<Course> regiCourse = new ArrayList<Course>(); 
-        // regiCourse.add(C1050);
         ArrayList<Course> compCourse = new ArrayList<Course>(); 
         compCourse.add(P3370);
         HashMap<Student, Section> classList = new HashMap<Student, Section>(); 
@@ -178,11 +153,8 @@ public class Bettervisor {
 
         //For Refund alt flows
         //1) Change isDomestic to true and currSemester to 1
-        Student studentOne = new Student("John", "J", "Doe", 1234567, 2, "john@uoguelph.ca", 80, "Computer Science", "Undeclared", -900, true, 0, compCourse, regiCourse, personalOne);
+        Student studentOne = new Student("John", "J", "Doe", 1234567, 1, "john@uoguelph.ca", 80, "Computer Science", "Undeclared", -900, true, 0, compCourse, regiCourse, personalOne);
         
-
-
-
         // C1050.addToClassList(studentOne, s1_1050);
         // studentOne.updateBalance(C1050, true);
 
@@ -352,7 +324,7 @@ public class Bettervisor {
                     }
                 } while (!isValid);
                                                                         
-                System.out.println(studentOne.createFutureSemester(courseCatalog, year, season));
+                studentOne.createFutureSemester(courseCatalog, year, season);
             }
             else if (choice == 4)
             {

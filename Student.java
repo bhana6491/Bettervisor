@@ -579,19 +579,14 @@ public class Student extends Person {
                     System.out.print("Specify the the course code of the course you want to add to your future semester: ");
                 }
             } while (!isValid);
-
-            if (courseToPlan.isRestricted(this)) {
-                System.out.println("Ineligible to plan course: Student has registered for or completed a course that is part of the selected course's restrictions");
+            
+            if (futureSem.courseExists(courseToPlan)) {
+                System.out.println("Ineligile to plan course: Student has already planned the selected course");
             }
             else {
-                if (futureSem.courseExists(courseToPlan)) {
-                    System.out.println("Ineligile to plan course: Student has already planned the selected course");
-                }
-                else {
-                    futureSem.addCourseToPlan(courseToPlan);
-                    if (futureSem.getNumPlanned() >= 5) {
-                        break;
-                    }
+                futureSem.addCourseToPlan(courseToPlan);
+                if (futureSem.getNumPlanned() >= 5) {
+                    break;
                 }
             }
 
