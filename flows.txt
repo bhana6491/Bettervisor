@@ -1,0 +1,33 @@
+Registering for courses
+Section 1 of 2750 is 0 seats - Alt flow, adding student to a waitlist
+1) Register for first Section 1 of 2750
+Student has completed PHIL3370 - Alt flow, already completed course
+1) Register for PHIL3370
+Register for 3750 and then register for 3490 - Alt flow exam time conflict
+1) Register for 3750 Section 3, then try and register for 3490
+
+
+Deregister
+S1_3750(Section ID = 3) is 1 seats and a student on the waitlist - Alt flow,register for section popping student from the section's waitlist
+1) Register for section 3 of 3750
+2) Then deregister - Msg should appear saying that a student has been popped off
+3) changing start date for courses alters amount refunded Line #38 Bettervisor
+
+Add Course Review
+1) Can only add one course review for a course, because that's the only course they've completed
+2) They will not be able to review the same course again
+
+Pay Tuition
+1) You should be able to overpay
+2) Payment deadline changes(in comments)Line #197
+
+Minor
+1) Changing gpa < 60 and currSemester to 8)Line #175
+
+Request refund
+1) Initialize with a credit balance at the beginning to ensure that they can get a refund(they shouldn't pay before requesting refund in order to facilitate flow)
+
+Future Semester
+1) change currSemester to 8 => uneligible to make future semester
+2) attempt add duplicate course to future semester => invalid choice
+3) adding 5 courses => exits loop and adds to future semester 

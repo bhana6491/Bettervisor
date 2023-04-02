@@ -164,13 +164,6 @@ public class Bettervisor {
         //1) Change isDomestic to true and currSemester to 1
         Student studentOne = new Student("John", "J", "Doe", 1234567, 1, "john@uoguelph.ca", 80, "Computer Science", "Undeclared", -600, true, 0, compCourse, regiCourse, personalOne);
         
-        // C1050.addToClassList(studentOne, s1_1050);
-        // studentOne.updateBalance(C1050, true);
-
-        //Instantiating Counselor object
-
-       
-
         //Initializing Counselor
 		Counselor counselorOne = new Counselor("Gregory", "Greg", "Klotz", 11123,"Computing", "gklotz@uoguelph.ca");
 

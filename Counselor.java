@@ -12,7 +12,6 @@ public class Counselor extends Person {
         this.primaryEmail = primaryEmail; 
     }
 	public static void main(String[] args){
-
 		Counselor myCounselor = new Counselor("Gregory", "Greg", "Klotz", 11123,"Computing", "gklotz@uoguelph.ca");
 		myCounselor.displayName();
 	}
@@ -46,9 +45,6 @@ public class Counselor extends Person {
             minorApp.setIsApproved(true);
             minorAppStudent.setMinor(minorApp.getMinor());
             return "\nMinor changed from " + oldMinor + " to " + minorApp.getMinor() + "!\n"; 
-
         }
-        
     }
-    
 }

@@ -44,5 +44,4 @@ public class PersonalInfo {
     {
         this.personalNumber = personalNumber; 
     }
-
 }

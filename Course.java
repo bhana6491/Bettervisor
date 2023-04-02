@@ -92,7 +92,6 @@ public class Course {
     }
     public void removeFromClassList(Student student, Section section)
     {
-
         classList.remove(student); 
 
         //increment number of empty seats available
@@ -124,7 +123,6 @@ public class Course {
 
     public boolean hasReviewedCourse(int studentID)
     {
-
         for (CourseReview cr: reviews)
         {
             if (cr.getAuthorID() == studentID)
@@ -133,7 +131,6 @@ public class Course {
             }
         }
         return false; 
-
     }
 
     public Section searchClassList(Student student)

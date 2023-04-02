@@ -2,7 +2,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Section{
-
     private int sectionID;
     private int emptySeats;
     private int maxSeats;
@@ -54,5 +53,4 @@ public class Section{
     {
         return sectionID; 
     }
-
 }

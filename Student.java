@@ -6,7 +6,6 @@ import java.time.Month;
 import java.time.temporal.ChronoUnit;
 
 public class Student extends Person {
-
     private int studentID;
     private int currSemester;
     private String universityEmail;
@@ -56,7 +55,6 @@ public class Student extends Person {
     }
     public String hasExamConflict(Course course)
     {
-
         for (Course c: registeredCourses)
         {
             if (c.getExamTime().equals(course.getExamTime()))

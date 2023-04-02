@@ -15,12 +15,5 @@ public class Person {
 	{
 		System.out.println(firstName + lastName + preferredName);
 	}
-
-	public static void main(String[] args){
-
-		Person myPerson = new Person("Adhyayan", "Eddie", "Bhandari");
-		myPerson.displayName();
-	
-	}
 }
 

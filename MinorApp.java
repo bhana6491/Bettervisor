@@ -20,7 +20,5 @@ public class MinorApp{
     public void setIsApproved(boolean isApproved)
     {
         this.isApproved = isApproved; 
-
     }
-
 }

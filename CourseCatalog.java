@@ -60,5 +60,4 @@ public class CourseCatalog {
     {
         return minorsList.contains(minor); 
     }
-
 }
