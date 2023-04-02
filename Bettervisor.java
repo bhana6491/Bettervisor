@@ -3,16 +3,18 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.lang.Math;
+import java.time.LocalDate;
+import java.time.Month;
 
 public class Bettervisor {
     public static void main(String[] args){
 
         //Course review initializations
-        CourseReview review2750 = new CourseReview("CIS2750", 1, "Not fun");
-        CourseReview review3750 = new CourseReview("CIS3750", 5, "Very enjoyable course");
-        CourseReview review3490 = new CourseReview("CIS3490", 3, "Very cool");
-        CourseReview review3110 = new CourseReview("CIS3110", 5, "Great fun");
-        CourseReview review1050 = new CourseReview("CIS1050", 5, "Web Development is cool"); 
+        CourseReview review2750 = new CourseReview("CIS2750", 1, "Not fun", 122343);
+        CourseReview review3750 = new CourseReview("CIS3750", 5, "Very enjoyable course", 234242);
+        CourseReview review3490 = new CourseReview("CIS3490", 3, "Very cool", 342334);
+        CourseReview review3110 = new CourseReview("CIS3110", 5, "Great fun", 847598);
+        CourseReview review1050 = new CourseReview("CIS1050", 5, "Web Development is cool", 347432); 
 
         Student studentTwo = new Student("Joseph", "Joe", "Den", 5673492, 3, "joseph@uoguelph.ca", 60, "Computer Science", "ECON", 0, true, 0, null, new ArrayList<Course>(), null);
 
@@ -33,6 +35,7 @@ public class Bettervisor {
         Section s1_3370 = new Section(9, 20, 100, new ArrayList<Student>(), "Tues, Thurs 11am-1pm", "Fri 2pm-3pm");
 
         //Course initializations
+        // To test refund amount, manipulate start date. For now, it will be 100% refund
         ArrayList<Section> cis2750Sections = new ArrayList<Section>();
         cis2750Sections.add(s1_2750);
         cis2750Sections.add(s2_2750);
@@ -42,12 +45,13 @@ public class Bettervisor {
             "CIS2750",
             new HashMap<Student, Section>(),
             cis2750Sections,
-            "1:00pm",
+            "Friday, April 7, 8:30am-10:30am",
             754.23,
             "Winter",
             0.75,
             "Course about creating a application",
-            cis2750Reviews
+            cis2750Reviews,
+            LocalDate.of(2023, Month.APRIL, 2)
         );
 
         ArrayList<Section> cis3750Sections = new ArrayList<Section>();
@@ -61,12 +65,13 @@ public class Bettervisor {
             "CIS3750",
             new HashMap<Student, Section>(),
             cis3750Sections,
-            "1:00pm",
+            "Monday, April 10, 1:00pm-2:00pm",
             600.99,
             "Winter",
             0.75,
             "Course about software development process",
-            cis3750Reviews
+            cis3750Reviews,
+            LocalDate.of(2023, Month.APRIL, 2)
         );
 
         ArrayList<Section> cis3490Sections = new ArrayList<Section>();
@@ -79,12 +84,13 @@ public class Bettervisor {
             "CIS3490",
             new HashMap<Student, Section>(),
             cis3490Sections,
-            "1:00pm",
+            "Monday, April 10, 1:00pm-2:00pm",
             500.00,
             "Winter",
             0.50,
             "Course about algorithms",
-            cis3490Reviews
+            cis3490Reviews,
+            LocalDate.of(2023, Month.APRIL, 2)
         );
 
         ArrayList<Section> cis3110Sections = new ArrayList<Section>();
@@ -97,12 +103,13 @@ public class Bettervisor {
             "CIS3110",
             new HashMap<Student, Section>(),
             cis3110Sections,
-            "1:00pm",
+            "Friday, April 14, 8:30am-10:30am",
             754.23,
             "Winter",
             0.50,
             "Course about operating systems",
-            cis3110Reviews
+            cis3110Reviews,
+            LocalDate.of(2023, Month.APRIL, 2)
         );
 
         ArrayList<Section> cis1050Sections = new ArrayList<Section>();
@@ -114,12 +121,13 @@ public class Bettervisor {
             "CIS1050",
             new HashMap<Student, Section>(),
             cis1050Sections,
-            "1:00pm",
+            "Tuesday, April 11, 10:30am-12:30pm",
             754.23,
             "Winter",
             0.50,
             "Course about web development",
-            cis1050Reviews
+            cis1050Reviews,
+            LocalDate.of(2023, Month.MARCH, 21)
         );
 
         ArrayList<Section> phil3370Sections = new ArrayList<Section>();
@@ -130,12 +138,13 @@ public class Bettervisor {
             "PHIL3370",
             new HashMap<Student, Section>(),
             phil3370Sections,
-            "1:00pm",
+            "Wednesday, April 12, 10:30am-12:30pm",
             754.23,
             "Winter",
             0.50,
             "Course about philosophy",
-            phil3370Reviews
+            phil3370Reviews,
+            LocalDate.of(2023, Month.APRIL, 2)
         );
 
         ArrayList<Course> regiCourse = new ArrayList<Course>(); 
@@ -153,7 +162,7 @@ public class Bettervisor {
 
         //For Refund alt flows
         //1) Change isDomestic to true and currSemester to 1
-        Student studentOne = new Student("John", "J", "Doe", 1234567, 1, "john@uoguelph.ca", 80, "Computer Science", "Undeclared", -900, true, 0, compCourse, regiCourse, personalOne);
+        Student studentOne = new Student("John", "J", "Doe", 1234567, 1, "john@uoguelph.ca", 80, "Computer Science", "Undeclared", -600, true, 0, compCourse, regiCourse, personalOne);
         
         // C1050.addToClassList(studentOne, s1_1050);
         // studentOne.updateBalance(C1050, true);
@@ -247,7 +256,23 @@ public class Bettervisor {
                     courseCodeInput = myObj.next();
                     myObj.nextLine();
 
-                    isValid = courseCatalog.searchCatalog(courseCodeInput) != null;
+                    Course c = courseCatalog.searchCatalog(courseCodeInput);
+
+                    isValid = c != null;
+
+                    if (isValid == true)
+                    {
+                        String examConflict = studentOne.hasExamConflict(c);
+                        if(examConflict != null)
+                        {
+                            System.out.println(examConflict + "\n");
+                            isValid=false; 
+                        }
+                        else
+                        {
+                            isValid = true;
+                        }
+                    }
     
                     if (!isValid)
                     {
@@ -334,6 +359,7 @@ public class Bettervisor {
             {
                 String courseCodeInput = "";
                 Course courseValid = null;
+                boolean hasReviewed;
                 do
                 {
                     System.out.println("\n Completed Courses:"); 
@@ -351,10 +377,16 @@ public class Bettervisor {
                     myObj.nextLine();
 
                     courseValid = studentOne.findCourse(courseCodeInput);
-
+                        
                 } while (courseValid == null);
-                
-                System.out.println(studentOne.addCourseReview(courseCodeInput));
+                hasReviewed = courseValid.hasReviewedCourse(studentOne.getStudentID());
+                if (hasReviewed) {
+                    System.out.println("You cannot submit another review for this course");
+                }
+                else
+                {
+                    System.out.println(studentOne.addCourseReview(courseCodeInput));
+                }
             }
             else if (choice == 6)
             {

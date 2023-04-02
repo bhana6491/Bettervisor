@@ -1,6 +1,7 @@
-public class MinorApp extends Application{
+public class MinorApp{
     private Student student;
     private String minor;
+    private boolean isApproved;
      
     MinorApp(Student student,String minor)
     {
@@ -16,4 +17,10 @@ public class MinorApp extends Application{
     {
         return minor; 
     }
+    public void setIsApproved(boolean isApproved)
+    {
+        this.isApproved = isApproved; 
+
+    }
+
 }

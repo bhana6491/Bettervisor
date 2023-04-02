@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -14,8 +15,9 @@ public class Course {
     private double weight;
     private String description;
     private ArrayList<CourseReview> reviews;
+    private LocalDate startDate;
 
-    Course(String courseCode, HashMap<Student, Section> classList, ArrayList<Section> sectionList, String examTime, double cost, String term, double weight, String description, ArrayList<CourseReview> reviews)
+    Course(String courseCode, HashMap<Student, Section> classList, ArrayList<Section> sectionList, String examTime, double cost, String term, double weight, String description, ArrayList<CourseReview> reviews, LocalDate startDate)
     {
         this.courseCode = courseCode; 
         this.classList = classList; 
@@ -26,7 +28,13 @@ public class Course {
         this.weight = weight; 
         this.description = description; 
         this.reviews = reviews;
+        this.startDate = startDate;
     }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
     public Section selectSection()
     {
         // //Print all sections of a course
@@ -100,7 +108,8 @@ public class Course {
             }
             addToClassList(popped, section);
             System.out.println("A student on the waitlist was added to the classlist!");
-            popped.updateBalance(this, true);
+            section.updateSection(-1);//decrement the number of seats available
+            popped.updateBalance(this, true, 1);
         }        
     }
     public String publishCourseReview(CourseReview courseReview)
@@ -113,10 +122,29 @@ public class Course {
         return this.cost; 
     }
 
+    public boolean hasReviewedCourse(int studentID)
+    {
+
+        for (CourseReview cr: reviews)
+        {
+            if (cr.getAuthorID() == studentID)
+            {
+                return true; 
+            }
+        }
+        return false; 
+
+    }
+
     public Section searchClassList(Student student)
     {
         //returns null if student not in class
         return classList.get(student);  
+    }
+
+    public String getExamTime()
+    {
+        return examTime; 
     }
 
     public String getCourseCode()

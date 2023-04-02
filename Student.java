@@ -1,6 +1,10 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Date;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.temporal.ChronoUnit;
+
 public class Student extends Person {
 
     private int studentID;
@@ -17,10 +21,6 @@ public class Student extends Person {
     private ArrayList<Course> completedCourses;
     private ArrayList<Course> registeredCourses;
  
-
-
-    // Need to figure out how to instantiate these variables 
-    // personalInfo, futureSchedule, completedCourses, registeredCourses
     Student(String firstName, String preferredName, String lastName, int studentID, int currSemester, String universityEmail, double gpa, String major, String minor, double balance, boolean isDomestic, double totalCredits, ArrayList<Course> completedCourses, ArrayList<Course> registeredCourses, PersonalInfo personalInfo)
     {
         super(firstName, preferredName, lastName);
@@ -37,7 +37,10 @@ public class Student extends Person {
         this.registeredCourses = registeredCourses;
         this.personalInfo = personalInfo; 
         this.futureSchedule = new ArrayList<FutureSemester>();
- 
+    }
+
+    public int getStudentID() {
+        return studentID;
     }
 
     public ArrayList<Course> getCompletedCourses() {
@@ -51,6 +54,18 @@ public class Student extends Person {
         return counselor.makeMinorAppDecision(minorApp); 
 
     }
+    public String hasExamConflict(Course course)
+    {
+
+        for (Course c: registeredCourses)
+        {
+            if (c.getExamTime().equals(course.getExamTime()))
+            {
+                return "Cannot register for " + course.getCourseCode() + ", exam time conflict with " + c.getCourseCode() + "!";
+            }
+        }
+        return null; 
+    }
     public String registerCourse(CourseCatalog catalog, String courseCode)
     {
 
@@ -60,6 +75,10 @@ public class Student extends Person {
         {
             return "\nYou are already registered in this course!\n"; 
         } 
+        if (registeredCourses.size() == 5)
+        {
+            return "\nYou are already registered for 5 courses!\n";
+        }
 
         if (completedCourses.contains(course))
         {
@@ -78,9 +97,9 @@ public class Student extends Person {
             course.addToClassList(this, section); 
             
             section.updateSection(-1); 
-            updateBalance(course, true); 
+            updateBalance(course, true, 1); 
             registeredCourses.add(course); 
-            return "\nYou have successfuly registered for " + course.getCourseCode() + " in Section " + section.getSectionID() + "\n" + "Your balance has been updated, current total is: " + balance + "\n"; 
+            return "\nYou have successfuly registered for " + course.getCourseCode() + " in Section " + section.getSectionID() + "\n" + "Your balance has been updated, current total is: " + String.format("%.2f", balance) + "\n"; 
         }
     }
     
@@ -102,12 +121,42 @@ public class Student extends Person {
     {
 
         Course c = searchRegisteredCourses(courseCode);//should always be valid, since we do the check outside as well
+        LocalDate startDate = c.getStartDate(); 
+        LocalDate dateAfter = LocalDate.now();
+        long num_days = ChronoUnit.DAYS.between(startDate, dateAfter);
+
+        double multiplier = 0;
+
+        if (dateAfter.isAfter(startDate))
+        {
+            if (num_days >=14)//no refund
+            {
+                System.out.println("You will recieve 0% refund for " + c.getCourseCode()); 
+                multiplier = 0; 
+            }
+            else if (num_days >=7 && num_days < 14)//50% refund
+            {
+                System.out.println("You will recieve 50% refund for " + c.getCourseCode()); 
+                multiplier = 0.5; 
+            }
+            else if (num_days < 7)//100% refund 
+            {
+                System.out.println("You will recieve 100% refund for " + c.getCourseCode()); 
+                multiplier = 1; 
+            }
+        }
+        else
+        {
+            System.out.println("You will recieve 100% refund for " + c.getCourseCode()); 
+            multiplier = 1; 
+
+        }
         Section s = c.searchClassList(this);
         c.removeFromClassList(this, s);
         registeredCourses.remove(c);
-        updateBalance(c, false);
+        updateBalance(c, false, multiplier);
 
-        return "\nSuccessfully deregistered from " + c.getCourseCode() + "\n" + "Your balance has been updated, current total is: " + balance;
+        return "\nSuccessfully deregistered from " + c.getCourseCode() + "\n" + "Your balance has been updated, current total is: " + String.format("%.2f", balance);
     }
 
     public String updatePersonalInfo()
@@ -294,7 +343,7 @@ public class Student extends Person {
         }
         return "SUCCESS";
     }
-    public void updateBalance(Course course, boolean addMinusCost)
+    public void updateBalance(Course course, boolean addMinusCost, double multiplier)
     {
         if (addMinusCost == true)
         {
@@ -302,7 +351,7 @@ public class Student extends Person {
         }
         else
         {
-            balance = balance - course.getCost(); 
+            balance = balance - (course.getCost() * multiplier); 
         }
     }
     public String payBalance()
@@ -385,6 +434,12 @@ public class Student extends Person {
             commentInput = courseReviewScanner.nextLine();
             String[] words = commentInput.split("\\s+");
 
+            if(words.length > 10)
+            {
+                System.out.println("Your comment cannot be over 10 words");
+                isValid = false; 
+            }
+
             for (String word : words)
             {
                 if (profanityList.contains(word))
@@ -395,7 +450,7 @@ public class Student extends Person {
             }
         } while (!isValid);
         
-        CourseReview cr = new CourseReview(course.getCourseCode(), ratingInput, commentInput);
+        CourseReview cr = new CourseReview(course.getCourseCode(), ratingInput, commentInput, studentID);
         course.publishCourseReview(cr);
         System.out.println(course.toString());
     }
@@ -489,7 +544,7 @@ public class Student extends Person {
     public String giveRefund(double amount)
     {
         balance = balance + amount;
-        return "\nYour request has been processed\nCurrent balance is: " + balance; 
+        return "\nYour request has been processed\nCurrent balance is: " + String.format("%.2f", balance); 
     }
     public void setMinor(String minor)
     {
@@ -533,8 +588,8 @@ public class Student extends Person {
             total += toCheck.getCost();
         }
         System.out.println("------------------------");
-        System.out.println("Semester Bill: $" + total);
-        System.out.println("Remaining Balance: $" + String.format("%.1f", balance));
+        System.out.println("Semester Bill: $" + String.format("%.2f", total));
+        System.out.println("Remaining Balance: $" + String.format("%.2f", balance));
 
         if (balance <= 0)
         {
